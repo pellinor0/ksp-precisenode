@@ -34,14 +34,23 @@ using KSP.IO;
 
 namespace RegexKSP {
     internal class ModuleNodeSaver : PartModule {
-		[KSPField (isPersistant = true)]
-		NodeList nodes;
+		//[KSPField (isPersistant = true)]
+		//NodeList nodes;
 
 		internal ModuleNodeSaver() {
-			nodes = new NodeList(this);
+			// nothing to do, part module is obsolete
+
+			// keeping the following for reference
+
+			//nodes = new NodeList(this);
 		}
 
 		public override void OnInitialize() {
+			// nothing to do, part module is obsolete
+
+			// keeping the following for reference
+
+/*
 			if(!HighLogic.LoadedSceneIsFlight || FlightGlobals.ActiveVessel == null || this.vessel == null) {
 				return;
 			} else if(this.vessel.patchedConicSolver == null) {
@@ -59,6 +68,7 @@ namespace RegexKSP {
 					n.createManeuverNode(p);
 				}
 			}
+*/
 		}
     }
 }
