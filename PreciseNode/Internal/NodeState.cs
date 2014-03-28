@@ -1,12 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UnityEngine;
-using KSP.IO;
 
 /******************************************************************************
- * Copyright (c) 2014, Justin Bengtson
+ * Copyright (c) 2013-2014, Justin Bengtson
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -33,32 +31,46 @@ using KSP.IO;
  ******************************************************************************/
 
 namespace RegexKSP {
-    public class ModuleNodeSaver : PartModule {
-		[KSPField (isPersistant = true)]
-		NodeList nodes;
+	public class NodeState {
+		public Vector3d deltaV;
+		public double UT;
 
-		public ModuleNodeSaver() {
-			nodes = new NodeList(this);
+		public NodeState() {
+			deltaV = new Vector3d();
+			UT = 0;
 		}
 
-		public override void OnInitialize() {
-			if(!HighLogic.LoadedSceneIsFlight || FlightGlobals.ActiveVessel == null || this.vessel == null) {
-				return;
-			} else if(this.vessel.patchedConicSolver == null) {
-				return;
-			}
-
-			PatchedConicSolver p = this.vessel.patchedConicSolver;
-
-			// don't load if we've already got nodes.
-			if(p.maneuverNodes.Count > 0) { return; }
-
-			foreach(NodeState n in nodes.nodes) {
-				// make sure we have a UT here and that it's in the future
-				if(n.UT > Planetarium.GetUniversalTime()) {
-					n.createManeuverNode(p);
-				}
-			}
+		public NodeState(Vector3d dv, double u) {
+			deltaV = new Vector3d(dv.x, dv.y, dv.z);
+			UT = u;
 		}
-    }
+
+		public NodeState(ManeuverNode m) {
+			deltaV = new Vector3d(m.DeltaV.x, m.DeltaV.y, m.DeltaV.z);
+			UT = m.UT;
+		}
+
+		public void update(ManeuverNode m) {
+			deltaV.x = m.DeltaV.x;
+			deltaV.y = m.DeltaV.y;
+			deltaV.z = m.DeltaV.z;
+			UT = m.UT;
+		}
+
+		public Vector3d getVector() {
+			return new Vector3d(deltaV.x, deltaV.y, deltaV.z);
+		}
+
+		public bool compare(ManeuverNode m) {
+			if (deltaV.x != m.DeltaV.x || deltaV.y != m.DeltaV.y || deltaV.z != m.DeltaV.z || UT != m.UT) {
+				return false;
+			}
+			return true;
+		}
+
+		public void createManeuverNode(PatchedConicSolver p) {
+			ManeuverNode newnode = p.AddManeuverNode(UT);
+			newnode.OnGizmoUpdated(deltaV, UT);
+		}
+	}
 }
