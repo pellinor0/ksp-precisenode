@@ -91,10 +91,10 @@ namespace RegexKSP {
 
         public void FixedUpdate() {
             if(!FlightDriver.Pause) {
-                PatchedConicSolver p = NodeTools.getSolver();
-                if(options.removeUsedNodes && p.maneuverNodes.Count > 0) {
-                    ManeuverNode node = p.maneuverNodes[0];
-                    if(node.GetBurnVector(FlightGlobals.ActiveVessel.Orbit).magnitude < options.usedNodeThreshold) {
+                PatchedConicSolver solver = NodeTools.getSolver();
+                if(options.removeUsedNodes && solver.maneuverNodes.Count > 0) {
+                    ManeuverNode node = solver.maneuverNodes[0];
+                    if(node.GetBurnVector(FlightGlobals.ActiveVessel.orbit).magnitude < options.usedNodeThreshold) {
                         solver.RemoveManeuverNode(node);
                         //TODO: Clean up states after removing the node.
                     }

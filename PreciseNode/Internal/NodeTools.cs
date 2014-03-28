@@ -66,8 +66,7 @@ namespace RegexKSP {
 		/// </summary>
 		public static void CreateNodeGizmo(ManeuverNode node) {
 			if(node.attachedGizmo != null) { return; }
-			PatchRendering pr = FlightGlobals.ActiveVessel.patchedConicRenderer.FindRenderingForPatch(node.patch);
-			node.AttachGizmo(MapView.ManeuverNodePrefab, FlightGlobals.ActiveVessel.patchedConicRenderer, pr);
+			node.AttachGizmo(MapView.ManeuverNodePrefab, FlightGlobals.ActiveVessel.patchedConicRenderer);
 		}
 
 		/// <summary>
