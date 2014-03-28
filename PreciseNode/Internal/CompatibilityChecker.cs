@@ -62,10 +62,15 @@ namespace RegexKSP {
             // can expect a future update to be available.
             //
 
-			if(Versioning.version_minor != 23) {
-				return false;
-			}
-            return true;
+			const int major = 0;
+			const int minor = 23;
+			const int revision = 0;
+			const int build = 434;
+
+			return (Versioning.version_major == major) &&
+				(Versioning.version_minor == minor) &&
+				(Versioning.Revision == revision) &&
+				(Versioning.BuildID == build);
 
             /*-----------------------------------------------*\
             | IMPLEMENTERS SHOULD NOT EDIT BEYOND THIS POINT! |
