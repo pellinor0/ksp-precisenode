@@ -89,6 +89,7 @@ namespace RegexKSP {
 			}
 		}
 
+#if NODE_CLEANUP
         public void FixedUpdate() {
             if(!FlightDriver.Pause) {
                 PatchedConicSolver solver = NodeTools.getSolver();
@@ -101,6 +102,7 @@ namespace RegexKSP {
                 }
             }
         }
+#endif
 
 		/// <summary>
 		/// Overridden function from MonoBehavior
@@ -509,8 +511,10 @@ namespace RegexKSP {
 				options.showOrbitInfo = temp;
 				curState.resizeMainWindow = true;
 			}
+#if NODE_CLEANUP
 			options.removeUsedNodes = GUILayout.Toggle(options.removeUsedNodes, "Remove Used Nodes");
             //TODO: Add threshold controls for removing used nodes
+#endif
 			GUILayout.EndVertical();
 			GUI.DragWindow();
 		}
@@ -836,8 +840,10 @@ namespace RegexKSP {
 					options.showOrbitInfo = config.GetValue<bool>("showOrbitInfo", false);
 					options.showUTControls = config.GetValue<bool>("showUTControls", false);
 					options.showManeuverPager = config.GetValue<bool>("showManeuverPager", true);
+#if NODE_CLEANUP
 					options.removeUsedNodes = config.GetValue<bool>("removeUsedNodes", false);
 					options.usedNodeThreshold = config.GetValue<double>("usedNodeThreshold", 0.5);
+#endif
 					options.largeUTIncrement = config.GetValue<bool>("largeUTIncrement", false);
 
 					string temp = config.GetValue<String>("progInc", "Keypad8");
@@ -910,8 +916,10 @@ namespace RegexKSP {
 			config["showOrbitInfo"] = options.showOrbitInfo;
 			config["showUTControls"] = options.showUTControls;
 			config["showManeuverPager"] = options.showManeuverPager;
+#if NODE_CLEANUP
 			config["removeUsedNodes"] = options.removeUsedNodes;
 			config["usedNodeThreshold"] = options.usedNodeThreshold;
+#endif
 			config["largeUTIncrement"] = options.largeUTIncrement;
 
 			config.save();
