@@ -32,9 +32,24 @@ using KSP.IO;
 
 namespace RegexKSP {
 	[KSPAddon(KSPAddon.Startup.Flight, false)]
+	internal class PreciseNode : MonoBehaviour {
+		private enum KEYS : byte {
+			PROGINC,
+			PROGDEC,
+			NORMINC,
+			NORMDEC,
+			RADIINC,
+			RADIDEC,
+			TIMEINC,
+			TIMEDEC,
+			PAGEINC,
+			PAGECON,
+			HIDEWINDOW,
+			ADDWIDGET
+		};
+		
+		internal PluginConfiguration config;
 
-	public class PreciseNode : MonoBehaviour {
-		public PluginConfiguration config;
 		private PNOptions options = new PNOptions();
 		private NodeManager curState = new NodeManager();
 		private List<Action> scheduledForLayout = new List<Action>();
@@ -53,7 +68,7 @@ namespace RegexKSP {
 		/// <summary>
 		/// Overridden function from MonoBehavior
 		/// </summary>
-		public void Awake() {
+		internal void Awake() {
 			CancelInvoke();
 			loadConfig();
 		}
@@ -61,14 +76,14 @@ namespace RegexKSP {
 		/// <summary>
 		/// Overridden function from MonoBehavior
 		/// </summary>
-		public void OnDisable() {
+		internal void OnDisable() {
 			saveConfig();
 		}
 
 		/// <summary>
 		/// Overridden function from MonoBehavior
 		/// </summary>
-		public void Update() {
+		internal void Update() {
 			if(!FlightDriver.Pause && canShowNodeEditor) {
                 PatchedConicSolver solver = NodeTools.getSolver();
                 if(solver.maneuverNodes.Count > 0) {
@@ -90,7 +105,7 @@ namespace RegexKSP {
 		}
 
 #if NODE_CLEANUP
-        public void FixedUpdate() {
+        internal void FixedUpdate() {
             if(!FlightDriver.Pause) {
                 PatchedConicSolver solver = NodeTools.getSolver();
                 if(options.removeUsedNodes && solver.maneuverNodes.Count > 0) {
@@ -107,7 +122,7 @@ namespace RegexKSP {
 		/// <summary>
 		/// Overridden function from MonoBehavior
 		/// </summary>
-		public void OnGUI() {
+		internal void OnGUI() {
 			// Porcess any scheduled functions
 			if(Event.current.type == EventType.Layout && !FlightDriver.Pause && scheduledForLayout.Count > 0) {
 				foreach(Action a in scheduledForLayout) {
@@ -149,7 +164,7 @@ namespace RegexKSP {
 		/// <summary>
 		/// Draw Node Editor and Options GUI
 		/// </summary>
-		public void drawGUI() {
+		private void drawGUI() {
 			GUI.skin = null;
 			options.mainWindowPos = GUILayout.Window(21349, options.mainWindowPos, drawMainWindow, "Precise Node", GUILayout.ExpandHeight(true));
 			if(showOptions) {
@@ -166,7 +181,7 @@ namespace RegexKSP {
 		/// <summary>
 		/// Draw Clock GUI
 		/// </summary>
-		public void drawClockGUI() {
+		private void drawClockGUI() {
 			GUI.skin = null;
 			options.clockWindowPos = GUILayout.Window(21353, options.clockWindowPos, drawClockWindow, "Clock", GUILayout.ExpandHeight(true));
 		}
@@ -174,7 +189,7 @@ namespace RegexKSP {
 		/// <summary>
 		/// Draw Conics GUI
 		/// </summary>
-		public void drawConicsGUI() {
+		private void drawConicsGUI() {
 			GUI.skin = null;
 			options.conicsWindowPos = GUILayout.Window(21354, options.conicsWindowPos, drawConicsWindow, "Conics Controls", GUILayout.ExpandHeight(true));
 		}
@@ -183,7 +198,7 @@ namespace RegexKSP {
 		/// Draws the Node Editor window.
 		/// </summary>
 		/// <param name="id">Identifier.</param>
-		public void drawMainWindow(int id) {
+		private void drawMainWindow(int id) {
 			Color defaultColor = GUI.backgroundColor;
 			Color contentColor = GUI.contentColor;
 			Color curColor = defaultColor;
@@ -412,7 +427,7 @@ namespace RegexKSP {
 		/// Draws the Clock window.
 		/// </summary>
 		/// <param name="id">Identifier.</param>
-		public void drawClockWindow(int id) {
+		private void drawClockWindow(int id) {
 			Color defaultColor = GUI.backgroundColor;
 			double timeNow = Planetarium.GetUniversalTime();
 			String timeUT = timeNow.ToString("F0");
@@ -447,7 +462,7 @@ namespace RegexKSP {
 		/// Draws the Conics window.
 		/// </summary>
 		/// <param name="id">Identifier.</param>
-		public void drawConicsWindow(int id) {
+		private void drawConicsWindow(int id) {
 			PatchedConicSolver solver = NodeTools.getSolver();
 			Color defaultColor = GUI.backgroundColor;
 
@@ -478,7 +493,7 @@ namespace RegexKSP {
 		/// Draws the Options window.
 		/// </summary>
 		/// <param name="id">Identifier.</param>
-		public void drawOptionsWindow(int id) {
+		private void drawOptionsWindow(int id) {
 			Color defaultColor = GUI.backgroundColor;
 
 			// Close button
@@ -523,7 +538,7 @@ namespace RegexKSP {
 		/// Draws the Keymapper window.
 		/// </summary>
 		/// <param name="id">Identifier.</param>
-		public void drawKeymapperWindow(int id) {
+		private void drawKeymapperWindow(int id) {
 			Color defaultColor = GUI.backgroundColor;
 
 			// Close button
@@ -604,7 +619,7 @@ namespace RegexKSP {
 			GUI.DragWindow();
 		}
 
-		public void drawTripWindow(int id) {
+		private void drawTripWindow(int id) {
 			PatchedConicSolver solver = NodeTools.getSolver();
 
 			GUILayout.BeginVertical();
@@ -924,21 +939,6 @@ namespace RegexKSP {
 
 			config.save();
 		}
-
-		private enum KEYS : byte {
-			PROGINC,
-			PROGDEC,
-			NORMINC,
-			NORMDEC,
-			RADIINC,
-			RADIDEC,
-			TIMEINC,
-			TIMEDEC,
-			PAGEINC,
-			PAGECON,
-			HIDEWINDOW,
-			ADDWIDGET
-		};
 	}	
 }
 

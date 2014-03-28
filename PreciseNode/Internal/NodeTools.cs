@@ -32,12 +32,12 @@ using KSP.IO;
 
 namespace RegexKSP {
 
-	public class NodeTools {
+	internal static class NodeTools {
 		/// <summary>
 		/// Sets the conics render mode
 		/// </summary>
 		/// <param name="mode">The conics render mode to use, one of 0, 1, 2, 3, or 4.  Arguments outside those will be set to 3.</param>
-		public static void changeConicsMode(int mode) {
+		internal static void changeConicsMode(int mode) {
 			switch(mode) {
 				case 0:
 					FlightGlobals.ActiveVessel.patchedConicRenderer.relativityMode = PatchRendering.RelativityMode.LOCAL_TO_BODIES;
@@ -64,7 +64,7 @@ namespace RegexKSP {
 		/// <summary>
 		/// Creates a new Meneuver Node Gizmo if needed
 		/// </summary>
-		public static void CreateNodeGizmo(ManeuverNode node) {
+		internal static void CreateNodeGizmo(ManeuverNode node) {
 			if(node.attachedGizmo != null) { return; }
 			node.AttachGizmo(MapView.ManeuverNodePrefab, FlightGlobals.ActiveVessel.patchedConicRenderer);
 		}
@@ -74,7 +74,7 @@ namespace RegexKSP {
 		/// </summary>
 		/// <returns>The converted time.</returns>
 		/// <param name="UT">Kerbal Space Program Universal Time.</param>
-		public static String convertUTtoHumanTime(double UT) {
+		internal static String convertUTtoHumanTime(double UT) {
 			long secs = (long)Math.Floor(UT % 60);
 			long mins = (long)Math.Floor((UT / 60) % 60);
 			long hour = (long)Math.Floor((UT / 3600) % 24);
@@ -89,7 +89,7 @@ namespace RegexKSP {
 		/// </summary>
 		/// <returns>The converted time.</returns>
 		/// <param name="UT">Kerbal Space Program Universal Time.</param>
-		public static String convertUTtoHumanDuration(double UT) {
+		internal static String convertUTtoHumanDuration(double UT) {
 			double temp = Math.Floor(Math.Abs(UT % 60));
 			string retval = (long)temp + "s";
 			if(Math.Abs(UT / 60) > 1.0) {
@@ -115,7 +115,7 @@ namespace RegexKSP {
 		/// Merges the given node into the next lowest node (n's index - 1).  If there is no lower node, does nothing.
 		/// </summary>
 		/// <param name="n">The ManeuverNode to merge down.</param>
-		public static void mergeNodeDown(ManeuverNode n) {
+		internal static void mergeNodeDown(ManeuverNode n) {
 			PatchedConicSolver p = NodeTools.getSolver();
 			Orbit o = FlightGlobals.ActiveVessel.orbit;
 			int nodes = p.maneuverNodes.Count;
@@ -158,7 +158,7 @@ namespace RegexKSP {
 		/// </summary>
 		/// <returns>The string format, in meters.</returns>
 		/// <param name="d">The double to format</param>
-		public static string formatMeters(double d) {
+		internal static string formatMeters(double d) {
 			if(Math.Abs(d / 1000000.0) > 1) {
 				// format as kilometers.
 				return (d/1000.0).ToString("0.##") + "km";
@@ -176,7 +176,7 @@ namespace RegexKSP {
 		/// Returns the orbit of the currently targeted item or null if there is none.
 		/// </summary>
 		/// <returns>The orbit or null.</returns>
-		public static Orbit getTargetOrbit() {
+		internal static Orbit getTargetOrbit() {
 			ITargetable tgt = FlightGlobals.fetch.VesselTarget;
 			if(tgt != null) {
 				// if we have a null vessel it's a celestial body
@@ -194,7 +194,7 @@ namespace RegexKSP {
 		/// </summary>
 		/// <returns>The equatorial AN UT.</returns>
 		/// <param name="o">The Orbit to calculate the UT from.</param>
-		public static double getEquatorialANUT(Orbit o) {
+		internal static double getEquatorialANUT(Orbit o) {
             //TODO: Add safeguards for bad UTs, may need to be refactored to NodeManager
 			return o.GetUTforTrueAnomaly(o.GetTrueAnomalyOfZupVector(o.GetANVector()), 2);
 		}
@@ -205,7 +205,7 @@ namespace RegexKSP {
 		/// <returns>The UT for the ascending node in reference to the target orbit.</returns>
 		/// <param name="a">The orbit to find the UT on.</param>
 		/// <param name="b">The target orbit.</param>
-		public static double getTargetANUT(Orbit a, Orbit b) {
+		internal static double getTargetANUT(Orbit a, Orbit b) {
             //TODO: Add safeguards for bad UTs, may need to be refactored to NodeManager
 			Vector3d ANVector = Vector3d.Cross(b.h, a.GetOrbitNormal()).normalized;
 			return a.GetUTforTrueAnomaly(a.GetTrueAnomalyOfZupVector(ANVector), 2);
@@ -216,7 +216,7 @@ namespace RegexKSP {
 		/// </summary>
 		/// <returns>The equatorial DN UT.</returns>
 		/// <param name="o">The Orbit to calculate the UT from.</param>
-		public static double getEquatorialDNUT(Orbit o) {
+		internal static double getEquatorialDNUT(Orbit o) {
             //TODO: Add safeguards for bad UTs, may need to be refactored to NodeManager
 			Vector3d DNVector = QuaternionD.AngleAxis(NodeTools.Angle360(o.LAN + 180), Planetarium.Zup.Z) * Planetarium.Zup.X;
 			return o.GetUTforTrueAnomaly(o.GetTrueAnomalyOfZupVector(DNVector), 2);
@@ -228,7 +228,7 @@ namespace RegexKSP {
 		/// <returns>The UT for the descending node in reference to the target orbit.</returns>
 		/// <param name="a">The orbit to find the UT on.</param>
 		/// <param name="b">The target orbit.</param>
-		public static double getTargetDNUT(Orbit a, Orbit b) {
+		internal static double getTargetDNUT(Orbit a, Orbit b) {
             //TODO: Add safeguards for bad UTs, may need to be refactored to NodeManager
 			Vector3d DNVector = Vector3d.Cross(a.GetOrbitNormal(), b.h).normalized;
 			return a.GetUTforTrueAnomaly(a.GetTrueAnomalyOfZupVector(DNVector), 2);
@@ -238,7 +238,7 @@ namespace RegexKSP {
 		/// Adjusts the specified angle to between 0 and 360 degrees.
 		/// </summary>
 		/// <param name="d">The specified angle to restrict.</param>
-        public static double Angle360(double d) {
+		internal static double Angle360(double d) {
             d %= 360;
             if(d < 0) {
 				return d + 360;
@@ -251,7 +251,7 @@ namespace RegexKSP {
 		/// </summary>
 		/// <returns>The ejection angle in degrees.  Positive results are the angle from prograde, negative results are the angle from retrograde.</returns>
 		/// <param name="nodeUT">Kerbal Space Program Universal Time.</param>
-		public static double getEjectionAngle(Orbit o, double nodeUT) {
+		internal static double getEjectionAngle(Orbit o, double nodeUT) {
 			CelestialBody body = o.referenceBody;
 
 			// Calculate the angle between the node's position and the reference body's velocity at nodeUT
@@ -271,11 +271,11 @@ namespace RegexKSP {
 		/// Convenience function.
 		/// </summary>
 		/// <returns>The patched conic solver for the currently active vessel.</returns>
-		public static PatchedConicSolver getSolver() {
+		internal static PatchedConicSolver getSolver() {
 			return FlightGlobals.ActiveVessel.patchedConicSolver;
 		}
 
-		public static Orbit findNextEncounter(ManeuverNode node) {
+		internal static Orbit findNextEncounter(ManeuverNode node) {
 			System.Collections.ObjectModel.ReadOnlyCollection<Orbit> plan = node.solver.flightPlan.AsReadOnly();
 			Orbit curOrbit = node.patch; // FlightGlobals.ActiveVessel.orbit;
 			for(int k = plan.IndexOf(node.patch); k < plan.Count; k++) {
@@ -290,7 +290,7 @@ namespace RegexKSP {
 		/// <summary>
 		/// Function to figure out which KeyCode was pressed.
 		/// </summary>
-		public static KeyCode fetchKey() {
+		internal static KeyCode fetchKey() {
 			int enums = System.Enum.GetNames(typeof(KeyCode)).Length;
 			for(int k = 0; k < enums; k++) {
 				if(Input.GetKey((KeyCode)k)) {

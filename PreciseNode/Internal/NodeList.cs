@@ -33,13 +33,14 @@ using UnityEngine;
 
 namespace RegexKSP {
 	[Serializable]
-	public class NodeList : IConfigNode {
+	internal class NodeList : IConfigNode {
 		private static string[] delimiter = new string[] { "," };
 
-		private PartModule parent;
-		public List<NodeState> nodes = new List<NodeState>();
+		internal List<NodeState> nodes = new List<NodeState>();
 
-		public NodeList(PartModule p) {
+		private PartModule parent;
+
+		internal NodeList(PartModule p) {
 			parent = p;
 		}
 

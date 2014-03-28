@@ -30,15 +30,15 @@ using KSP.IO;
  ******************************************************************************/
 
 namespace RegexKSP {
-	public class GUIParts {
-		public static void drawDoubleLabel(String text1, float width1, String text2, float width2) {
+	internal static class GUIParts {
+		internal static void drawDoubleLabel(String text1, float width1, String text2, float width2) {
 			GUILayout.BeginHorizontal();
 			GUILayout.Label(text1, GUILayout.Width(width1));
 			GUILayout.Label(text2, GUILayout.Width(width2));
 			GUILayout.EndHorizontal();
 		}
 
-		public static void drawButton(String text, Color bgColor, Action callback) {
+		internal static void drawButton(String text, Color bgColor, Action callback) {
 			Color defaultColor = GUI.backgroundColor;
 			GUI.backgroundColor = bgColor;
 			if(GUILayout.Button(text)) {
@@ -47,7 +47,7 @@ namespace RegexKSP {
 			GUI.backgroundColor = defaultColor;
 		}
 
-		public static void drawManeuverPager(NodeManager curState) {
+		internal static void drawManeuverPager(NodeManager curState) {
 			PatchedConicSolver solver = NodeTools.getSolver();
 
 			GUILayout.BeginHorizontal();

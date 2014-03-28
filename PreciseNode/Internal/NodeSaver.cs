@@ -33,11 +33,11 @@ using KSP.IO;
  ******************************************************************************/
 
 namespace RegexKSP {
-    public class ModuleNodeSaver : PartModule {
+    internal class ModuleNodeSaver : PartModule {
 		[KSPField (isPersistant = true)]
 		NodeList nodes;
 
-		public ModuleNodeSaver() {
+		internal ModuleNodeSaver() {
 			nodes = new NodeList(this);
 		}
 

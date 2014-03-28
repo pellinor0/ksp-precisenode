@@ -32,42 +32,42 @@ using UnityEngine;
  ******************************************************************************/
 
 namespace RegexKSP {
-	public class PNOptions {
-		public Rect mainWindowPos = new Rect(Screen.width / 10, 20, 250, 130);
-		public Rect optionsWindowPos = new Rect(Screen.width / 3, 20, 250, 130);
-		public Rect keymapperWindowPos = new Rect(Screen.width / 5, 20, 250, 130);
-		public Rect clockWindowPos = new Rect(Screen.width / 3, Screen.height / 2, 195, 65);
-		public Rect conicsWindowPos = new Rect(Screen.width / 5, Screen.height / 2, 250, 65);
-		public Rect tripWindowPos = new Rect(Screen.width / 5, Screen.height / 5, 320, 65);
+	internal class PNOptions {
+		internal Rect mainWindowPos = new Rect(Screen.width / 10, 20, 250, 130);
+		internal Rect optionsWindowPos = new Rect(Screen.width / 3, 20, 250, 130);
+		internal Rect keymapperWindowPos = new Rect(Screen.width / 5, 20, 250, 130);
+		internal Rect clockWindowPos = new Rect(Screen.width / 3, Screen.height / 2, 195, 65);
+		internal Rect conicsWindowPos = new Rect(Screen.width / 5, Screen.height / 2, 250, 65);
+		internal Rect tripWindowPos = new Rect(Screen.width / 5, Screen.height / 5, 320, 65);
 
-		public bool showManeuverPager = true;
-		public bool showConicsAlways = false;
-		public bool showClock = false;
-		public bool showTrip = false;
-		public bool showUTControls = false;
-		public bool showEAngle = true;
-		public bool showOrbitInfo = false;
-		public bool removeUsedNodes = false;
+		internal bool showManeuverPager = true;
+		internal bool showConicsAlways = false;
+		internal bool showClock = false;
+		internal bool showTrip = false;
+		internal bool showUTControls = false;
+		internal bool showEAngle = true;
+		internal bool showOrbitInfo = false;
+		internal bool removeUsedNodes = false;
 
-		public bool largeUTIncrement = false;
+		internal bool largeUTIncrement = false;
 
-		public KeyCode progInc = KeyCode.Keypad8;
-		public KeyCode progDec = KeyCode.Keypad5;
-		public KeyCode normInc = KeyCode.Keypad9;
-		public KeyCode normDec = KeyCode.Keypad7;
-		public KeyCode radiInc = KeyCode.Keypad6;
-		public KeyCode radiDec = KeyCode.Keypad4;
-		public KeyCode timeInc = KeyCode.Keypad3;
-		public KeyCode timeDec = KeyCode.Keypad1;
-		public KeyCode pageIncrement = KeyCode.Keypad0;
-		public KeyCode pageConics = KeyCode.KeypadEnter;
-		public KeyCode hideWindow = KeyCode.P;
-		public KeyCode addWidget = KeyCode.O;
-		public double increment = 1.0;
-		public double usedNodeThreshold = 0.5;
-		public int conicsMode = 3;
+		internal KeyCode progInc = KeyCode.Keypad8;
+		internal KeyCode progDec = KeyCode.Keypad5;
+		internal KeyCode normInc = KeyCode.Keypad9;
+		internal KeyCode normDec = KeyCode.Keypad7;
+		internal KeyCode radiInc = KeyCode.Keypad6;
+		internal KeyCode radiDec = KeyCode.Keypad4;
+		internal KeyCode timeInc = KeyCode.Keypad3;
+		internal KeyCode timeDec = KeyCode.Keypad1;
+		internal KeyCode pageIncrement = KeyCode.Keypad0;
+		internal KeyCode pageConics = KeyCode.KeypadEnter;
+		internal KeyCode hideWindow = KeyCode.P;
+		internal KeyCode addWidget = KeyCode.O;
+		internal double increment = 1.0;
+		internal double usedNodeThreshold = 0.5;
+		internal int conicsMode = 3;
 
-		public void downIncrement() {
+		internal void downIncrement() {
 			if (increment == 0.01) {
 				increment = 0.1;
 			} else if (increment == 0.1) {
@@ -83,7 +83,7 @@ namespace RegexKSP {
 			}
 		}
 
-		public void upIncrement() {
+		internal void upIncrement() {
 			if (increment == 0.01) {
 				increment = 100;
 			} else if (increment == 0.1) {
@@ -99,12 +99,12 @@ namespace RegexKSP {
 			}
 		}
 
-		public void setConicsMode(int mode) {
+		internal void setConicsMode(int mode) {
 			conicsMode = mode;
 			NodeTools.changeConicsMode(conicsMode);
 		}
 
-		public void pageConicsMode() {
+		internal void pageConicsMode() {
 			conicsMode++;
 			if (conicsMode < 0 || conicsMode > 4) {
 				conicsMode = 0;

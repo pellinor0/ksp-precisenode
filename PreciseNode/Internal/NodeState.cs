@@ -31,44 +31,44 @@ using System.Text;
  ******************************************************************************/
 
 namespace RegexKSP {
-	public class NodeState {
-		public Vector3d deltaV;
-		public double UT;
+	internal class NodeState {
+		internal Vector3d deltaV;
+		internal double UT;
 
-		public NodeState() {
+		internal NodeState() {
 			deltaV = new Vector3d();
 			UT = 0;
 		}
 
-		public NodeState(Vector3d dv, double u) {
+		internal NodeState(Vector3d dv, double u) {
 			deltaV = new Vector3d(dv.x, dv.y, dv.z);
 			UT = u;
 		}
 
-		public NodeState(ManeuverNode m) {
+		internal NodeState(ManeuverNode m) {
 			deltaV = new Vector3d(m.DeltaV.x, m.DeltaV.y, m.DeltaV.z);
 			UT = m.UT;
 		}
 
-		public void update(ManeuverNode m) {
+		internal void update(ManeuverNode m) {
 			deltaV.x = m.DeltaV.x;
 			deltaV.y = m.DeltaV.y;
 			deltaV.z = m.DeltaV.z;
 			UT = m.UT;
 		}
 
-		public Vector3d getVector() {
+		internal Vector3d getVector() {
 			return new Vector3d(deltaV.x, deltaV.y, deltaV.z);
 		}
 
-		public bool compare(ManeuverNode m) {
+		internal bool compare(ManeuverNode m) {
 			if (deltaV.x != m.DeltaV.x || deltaV.y != m.DeltaV.y || deltaV.z != m.DeltaV.z || UT != m.UT) {
 				return false;
 			}
 			return true;
 		}
 
-		public void createManeuverNode(PatchedConicSolver p) {
+		internal void createManeuverNode(PatchedConicSolver p) {
 			ManeuverNode newnode = p.AddManeuverNode(UT);
 			newnode.OnGizmoUpdated(deltaV, UT);
 		}

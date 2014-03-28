@@ -31,30 +31,30 @@ using System.Text;
  ******************************************************************************/
 
 namespace RegexKSP {
-	public class NodeManager {
-		public NodeState curNodeState;
-		public NodeState curState;
-		public ManeuverNode node = null;
-		public ManeuverNode nextNode = null;
-		public bool changed = false;
-		public bool encounter = false;
-		public bool resizeMainWindow = false;
-		public bool resizeClockWindow = false;
+	internal class NodeManager {
+		internal NodeState curNodeState;
+		internal NodeState curState;
+		internal ManeuverNode node = null;
+		internal ManeuverNode nextNode = null;
+		internal bool changed = false;
+		internal bool encounter = false;
+		internal bool resizeMainWindow = false;
+		internal bool resizeClockWindow = false;
 
-		public bool progradeParsed = true;
-		public bool radialParsed = true;
-		public bool normalParsed = true;
-		public bool timeParsed = true;
-		public string progradeText = "";
-		public string radialText = "";
-		public string normalText = "";
-		public string timeText = "";
+		internal bool progradeParsed = true;
+		internal bool radialParsed = true;
+		internal bool normalParsed = true;
+		internal bool timeParsed = true;
+		internal string progradeText = "";
+		internal string radialText = "";
+		internal string normalText = "";
+		internal string timeText = "";
 
-		public NodeManager() {
+		internal NodeManager() {
 			curState = new NodeState();
 		}
 
-		public NodeManager(ManeuverNode n) {
+		internal NodeManager(ManeuverNode n) {
 			curState = new NodeState(n);
 			curNodeState = new NodeState();
 			node = n;
@@ -65,7 +65,7 @@ namespace RegexKSP {
 			}
 		}
 
-		public NodeManager nextState() {
+		internal NodeManager nextState() {
 			if (nextNode != null) {
 				return new NodeManager(nextNode);
 			}
@@ -75,13 +75,13 @@ namespace RegexKSP {
 			return this;
 		}
 
-		public void addPrograde(double d) {
+		internal void addPrograde(double d) {
 			curState.deltaV.z += d;
 			progradeText = curState.deltaV.z.ToString();
 			changed = true;
 		}
 
-		public void setPrograde(String s) {
+		internal void setPrograde(String s) {
 			double d;
 			progradeText = s;
 			if (s.EndsWith(".")) {
@@ -98,13 +98,13 @@ namespace RegexKSP {
 			}
 		}
 
-		public void addNormal(double d) {
+		internal void addNormal(double d) {
 			curState.deltaV.y += d;
 			normalText = curState.deltaV.y.ToString();
 			changed = true;
 		}
 
-		public void setNormal(String s) {
+		internal void setNormal(String s) {
 			if (normalText.Equals(s, StringComparison.Ordinal)) {
 				return;
 			}
@@ -124,13 +124,13 @@ namespace RegexKSP {
 			}
 		}
 
-		public void addRadial(double d) {
+		internal void addRadial(double d) {
 			curState.deltaV.x += d;
 			radialText = curState.deltaV.x.ToString();
 			changed = true;
 		}
 
-		public void setRadial(String s) {
+		internal void setRadial(String s) {
 			if (radialText.Equals(s, StringComparison.Ordinal)) {
 				return;
 			}
@@ -150,23 +150,23 @@ namespace RegexKSP {
 			}
 		}
 
-		public double currentUT() {
+		internal double currentUT() {
 			return curState.UT;
 		}
 
-		public void addUT(double d) {
+		internal void addUT(double d) {
 			curState.UT += d;
 			timeText = curState.UT.ToString();
 			changed = true;
 		}
 
-		public void setUT(double d) {
+		internal void setUT(double d) {
 			curState.UT = d;
 			timeText = curState.UT.ToString();
 			changed = true;
 		}
 
-		public void setUT(String s) {
+		internal void setUT(String s) {
 			if (timeText.Equals(s, StringComparison.Ordinal)) {
 				return;
 			}
@@ -186,28 +186,28 @@ namespace RegexKSP {
 			}
 		}
 
-		public double currentMagnitude() {
+		internal double currentMagnitude() {
 			return curState.deltaV.magnitude;
 		}
 
-		public void setPeriapsis() {
+		internal void setPeriapsis() {
 			//TODO: Add look-ahead functionality if the current periapsis is non-existant.
 			setUT(Planetarium.GetUniversalTime() + node.patch.timeToPe);
 		}
 
-		public void setApoapsis() {
+		internal void setApoapsis() {
 			//TODO: Add look-ahead functionality if the current apoapsis is non-existant.
 			setUT(Planetarium.GetUniversalTime() + node.patch.timeToAp);
 		}
 
-		public bool hasNode() {
+		internal bool hasNode() {
 			if (node == null) {
 				return false;
 			}
 			return true;
 		}
 
-		public void updateNode() {
+		internal void updateNode() {
 			// Node manager policy:
 			// if the manager has been changed from the last update manager snapshot, take the manager
 			// UNLESS
