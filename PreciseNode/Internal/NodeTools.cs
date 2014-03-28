@@ -73,7 +73,7 @@ namespace RegexKSP {
 		/// Converts the UT to human-readable Kerbal local time.
 		/// </summary>
 		/// <returns>The converted time.</returns>
-		/// <param name="UT">Kerbal Spece Program Universal Time.</param>
+		/// <param name="UT">Kerbal Space Program Universal Time.</param>
 		public static String convertUTtoHumanTime(double UT) {
 			long secs = (long)Math.Floor(UT % 60);
 			long mins = (long)Math.Floor((UT / 60) % 60);
@@ -88,7 +88,7 @@ namespace RegexKSP {
 		/// Converts the UT to human-readable duration.
 		/// </summary>
 		/// <returns>The converted time.</returns>
-		/// <param name="UT">Kerbal Spece Program Universal Time.</param>
+		/// <param name="UT">Kerbal Space Program Universal Time.</param>
 		public static String convertUTtoHumanDuration(double UT) {
 			double temp = Math.Floor(Math.Abs(UT % 60));
 			string retval = (long)temp + "s";
@@ -250,7 +250,7 @@ namespace RegexKSP {
 		/// Gets the ejection angle of the current maneuver node.
 		/// </summary>
 		/// <returns>The ejection angle in degrees.  Positive results are the angle from prograde, negative results are the angle from retrograde.</returns>
-		/// <param name="nodeUT">Kerbal Spece Program Universal Time.</param>
+		/// <param name="nodeUT">Kerbal Space Program Universal Time.</param>
 		public static double getEjectionAngle(Orbit o, double nodeUT) {
 			CelestialBody body = o.referenceBody;
 
