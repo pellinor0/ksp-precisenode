@@ -336,7 +336,7 @@ namespace RegexKSP {
 			}
 			GUI.contentColor = contentColor;
 			double ut_increment = options.increment * (options.largeUTIncrement ? 10.0 : 1.0);
-			GUIParts.drawButton("-", Color.red, () => { curState.addUT(ut_increment * -1.0); });
+			GUIParts.drawButton("-", Color.red, () => { curState.addUT(-ut_increment); });
 			GUIParts.drawButton("+", Color.green, () => { curState.addUT(ut_increment); });
 			GUILayout.EndHorizontal();
 
@@ -344,7 +344,7 @@ namespace RegexKSP {
 			if(options.showUTControls) {
 				GUILayout.BeginHorizontal();
 				GUIParts.drawButton("Peri", Color.yellow, () => { curState.setPeriapsis(); });
-				GUIParts.drawButton("DN", Color.magenta, delegate() {
+				GUIParts.drawButton("DN", Color.magenta, () => {
 					Orbit targ = NodeTools.getTargetOrbit();
 					if(targ != null) {
 						curState.setUT(curState.node.patch.getTargetDNUT(targ));
@@ -359,7 +359,7 @@ namespace RegexKSP {
 					GUIParts.drawButton("-1K", Color.red, () => { curState.addUT(-1000); });
 					GUIParts.drawButton("+1K", Color.green, () => { curState.addUT(1000); });
 				}
-				GUIParts.drawButton("AN", Color.cyan, delegate() {
+				GUIParts.drawButton("AN", Color.cyan, () => {
 					Orbit targ = NodeTools.getTargetOrbit();
 					if(targ != null) {
 						curState.setUT(curState.node.patch.getTargetANUT(targ));
@@ -386,7 +386,7 @@ namespace RegexKSP {
 				curState.setPrograde(check);
 			}
 			GUI.contentColor = contentColor;
-			GUIParts.drawButton("-", Color.red, () => { curState.addPrograde(options.increment * -1.0); });
+			GUIParts.drawButton("-", Color.red, () => { curState.addPrograde(-options.increment); });
 			GUIParts.drawButton("+", Color.green, () => { curState.addPrograde(options.increment); });
 			GUILayout.EndHorizontal();
 		}
@@ -403,7 +403,7 @@ namespace RegexKSP {
 				curState.setNormal(check);
 			}
 			GUI.contentColor = contentColor;
-			GUIParts.drawButton("-", Color.red, () => { curState.addNormal(options.increment * -1.0); });
+			GUIParts.drawButton("-", Color.red, () => { curState.addNormal(-options.increment); });
 			GUIParts.drawButton("+", Color.green, () => { curState.addNormal(options.increment); });
 			GUILayout.EndHorizontal();
 		}
@@ -420,7 +420,7 @@ namespace RegexKSP {
 				curState.setRadial(check);
 			}
 			GUI.contentColor = contentColor;
-			GUIParts.drawButton("-", Color.red, () => { curState.addRadial(options.increment * -1.0); });
+			GUIParts.drawButton("-", Color.red, () => { curState.addRadial(-options.increment); });
 			GUIParts.drawButton("+", Color.green, () => { curState.addRadial(options.increment); });
 			GUILayout.EndHorizontal();
 		}
@@ -600,12 +600,12 @@ namespace RegexKSP {
 					GUILayout.Label("Node " + (idx + 1), GUILayout.Width(60));
 					GUILayout.Label(curNode.DeltaV.magnitude.ToString("F2") + " m/s", GUILayout.Width(90));
 					GUILayout.Label(timeDiff.convertUTtoHumanDuration(), GUILayout.Width(200));
-					// these will be scheduled for during the next layout pass
 					if(idx > 0) {
-						GUIParts.drawButton("Merge ▲", Color.white, delegate() {
-							scheduledForLayout.Add(new Action(() => {
+						GUIParts.drawButton("Merge ▲", Color.white, () => {
+							// schedule for next layout pass to not mess up maneuver nodes while iterating over them
+							scheduledForLayout.Add(() => {
 								solver.maneuverNodes[idx].mergeNodeDown();
-							}));
+							});
 						});
 					}
 					GUILayout.EndHorizontal();
@@ -744,7 +744,7 @@ namespace RegexKSP {
 			}
 			// prograde decrement
 			if(Input.GetKeyDown(options.progDec)) {
-				curState.addPrograde(options.increment * -1.0);
+				curState.addPrograde(-options.increment);
 			}
 			// normal increment
 			if(Input.GetKeyDown(options.normInc)) {
@@ -752,7 +752,7 @@ namespace RegexKSP {
 			}
 			// normal decrement
 			if(Input.GetKeyDown(options.normDec)) {
-				curState.addNormal(options.increment * -1.0);
+				curState.addNormal(-options.increment);
 			}
 			// radial increment
 			if(Input.GetKeyDown(options.radiInc)) {
@@ -760,7 +760,7 @@ namespace RegexKSP {
 			}
 			// radial decrement
 			if(Input.GetKeyDown(options.radiDec)) {
-				curState.addRadial(options.increment * -1.0);
+				curState.addRadial(-options.increment);
 			}
 			// UT increment
 			if(Input.GetKeyDown(options.timeInc)) {
@@ -768,7 +768,7 @@ namespace RegexKSP {
 			}
 			// UT decrement
 			if(Input.GetKeyDown(options.timeDec)) {
-				curState.addUT(options.increment * (options.largeUTIncrement ? -10.0 : -1.0));
+				curState.addUT(-options.increment * (options.largeUTIncrement ? 10.0 : 1.0));
 			}
 			// Page Conics
 			if(Input.GetKeyDown(options.pageConics)) {
