@@ -60,7 +60,7 @@ namespace RegexKSP {
 			node = n;
 			updateCurrentNodeState();
 
-			if (NodeTools.findNextEncounter(n) != null) {
+			if (n.findNextEncounter() != null) {
 				encounter = true;
 			}
 		}
@@ -69,7 +69,7 @@ namespace RegexKSP {
 			if (nextNode != null) {
 				return new NodeManager(nextNode);
 			}
-			if (NodeTools.findNextEncounter(node) != null) {
+			if (node.findNextEncounter() != null) {
 				encounter = true;
 			}
 			return this;

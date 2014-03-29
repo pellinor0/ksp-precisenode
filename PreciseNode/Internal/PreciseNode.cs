@@ -238,7 +238,7 @@ namespace RegexKSP {
 			}
 
 			// Human-readable time
-			GUIParts.drawDoubleLabel("Time:", 100, NodeTools.convertUTtoHumanTime(curState.currentUT()), 130);
+			GUIParts.drawDoubleLabel("Time:", 100, curState.currentUT().convertUTtoHumanTime(), 130);
 
 			// Increment buttons
 			GUILayout.BeginHorizontal();
@@ -281,7 +281,7 @@ namespace RegexKSP {
 			if(options.showEAngle) {
 				String eangle = "n/a";
 				if(FlightGlobals.ActiveVessel.orbit.referenceBody.name != "Sun") {
-					eangle = NodeTools.getEjectionAngle(FlightGlobals.ActiveVessel.orbit, curState.currentUT()).ToString("0.##") + "°";
+					eangle = FlightGlobals.ActiveVessel.orbit.getEjectionAngle(curState.currentUT()).ToString("0.##") + "°";
 				}
 				GUIParts.drawDoubleLabel("Ejection angle:", 100, eangle, 130);
 			}
@@ -292,7 +292,7 @@ namespace RegexKSP {
 			if(options.showOrbitInfo) {
 				// Find the next encounter, if any, in our flight plan.
 				if(showEncounter) {
-					Orbit nextEnc = NodeTools.findNextEncounter(curState.node);
+					Orbit nextEnc = curState.node.findNextEncounter();
 					string name = "n/a";
 					string theName = "n/a";
 					string PeA = "n/a";
@@ -300,7 +300,7 @@ namespace RegexKSP {
 					if(nextEnc != null) {
 						name = nextEnc.referenceBody.name;
 						theName = nextEnc.referenceBody.theName;
-						PeA = NodeTools.formatMeters(nextEnc.PeA);
+						PeA = nextEnc.PeA.formatMeters();
 					} else {
 						curState.encounter = false;
 					}
@@ -313,8 +313,8 @@ namespace RegexKSP {
 				} else {
 					if(curState.node.solver.flightPlan.Count > 1) {
 						// output the apoapsis and periapsis of our projected orbit.
-						GUIParts.drawDoubleLabel("Apoapsis:", 100, NodeTools.formatMeters(curState.node.nextPatch.ApA), 100);
-						GUIParts.drawDoubleLabel("Periapsis:", 100, NodeTools.formatMeters(curState.node.nextPatch.PeA), 130);
+						GUIParts.drawDoubleLabel("Apoapsis:", 100, curState.node.nextPatch.ApA.formatMeters(), 100);
+						GUIParts.drawDoubleLabel("Periapsis:", 100, curState.node.nextPatch.PeA.formatMeters(), 130);
 					}
 				}
 			}
@@ -347,9 +347,9 @@ namespace RegexKSP {
 				GUIParts.drawButton("DN", Color.magenta, delegate() {
 					Orbit targ = NodeTools.getTargetOrbit();
 					if(targ != null) {
-						curState.setUT(NodeTools.getTargetDNUT(curState.node.patch, targ));
+						curState.setUT(curState.node.patch.getTargetDNUT(targ));
 					} else {
-						curState.setUT(NodeTools.getEquatorialDNUT(curState.node.patch));
+						curState.setUT(curState.node.patch.getEquatorialDNUT());
 					}
 				});
 				if (options.largeUTIncrement) {
@@ -362,9 +362,9 @@ namespace RegexKSP {
 				GUIParts.drawButton("AN", Color.cyan, delegate() {
 					Orbit targ = NodeTools.getTargetOrbit();
 					if(targ != null) {
-						curState.setUT(NodeTools.getTargetANUT(curState.node.patch, targ));
+						curState.setUT(curState.node.patch.getTargetANUT(targ));
 					} else {
-						curState.setUT(NodeTools.getEquatorialANUT(curState.node.patch));
+						curState.setUT(curState.node.patch.getEquatorialANUT());
 					}
 				});
 				GUIParts.drawButton("Apo", Color.blue, () => { curState.setApoapsis(); });
@@ -432,7 +432,7 @@ namespace RegexKSP {
 			Color defaultColor = GUI.backgroundColor;
 			double timeNow = Planetarium.GetUniversalTime();
 			String timeUT = timeNow.ToString("F0");
-			String timeHuman = NodeTools.convertUTtoHumanTime(timeNow);
+			String timeHuman = timeNow.convertUTtoHumanTime();
 
 			GUILayout.BeginVertical();
 
@@ -448,9 +448,9 @@ namespace RegexKSP {
 					next = timeNow - NodeTools.getSolver().maneuverNodes[0].UT;
 				}
 				if(next < 0) {
-					labelText = "T- " + NodeTools.convertUTtoHumanDuration(next);
+					labelText = "T- " + next.convertUTtoHumanDuration();
 				} else {
-					labelText = "T+ " + NodeTools.convertUTtoHumanDuration(next);
+					labelText = "T+ " + next.convertUTtoHumanDuration();
 				}
 				GUIParts.drawDoubleLabel("Next:", 35, labelText, 150);
 			}
@@ -599,10 +599,14 @@ namespace RegexKSP {
 					GUILayout.BeginHorizontal();
 					GUILayout.Label("Node " + (idx + 1), GUILayout.Width(60));
 					GUILayout.Label(curNode.DeltaV.magnitude.ToString("F2") + " m/s", GUILayout.Width(90));
-					GUILayout.Label(NodeTools.convertUTtoHumanDuration(timeDiff), GUILayout.Width(200));
+					GUILayout.Label(timeDiff.convertUTtoHumanDuration(), GUILayout.Width(200));
 					// these will be scheduled for during the next layout pass
 					if(idx > 0) {
-						GUIParts.drawButton("Merge ▲", Color.white, delegate() {scheduledForLayout.Add(new Action(() => {NodeTools.mergeNodeDown(solver.maneuverNodes[idx]);}));});
+						GUIParts.drawButton("Merge ▲", Color.white, delegate() {
+							scheduledForLayout.Add(new Action(() => {
+								solver.maneuverNodes[idx].mergeNodeDown();
+							}));
+						});
 					}
 					GUILayout.EndHorizontal();
 					total += curNode.DeltaV.magnitude;
@@ -776,7 +780,7 @@ namespace RegexKSP {
 			}
 			// open node gizmo
 			if(Input.GetKeyDown(options.addWidget)) {
-				NodeTools.CreateNodeGizmo(curState.node);
+				curState.node.CreateNodeGizmo();
 			}
 		}
 

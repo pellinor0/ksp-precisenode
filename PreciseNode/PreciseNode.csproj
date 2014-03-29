@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Internal\CompatibilityChecker.cs" />
     <Compile Include="Internal\GUIParts.cs" />
+    <Compile Include="Internal\Extensions.cs" />
     <Compile Include="Internal\NodeList.cs" />
     <Compile Include="Internal\NodeManager.cs" />
     <Compile Include="Internal\NodeSaver.cs" />
