@@ -67,17 +67,20 @@ namespace RegexKSP {
 		private Key currentWaitKey = Key.NONE;
 		private double keyWaitTime = 0.0;
 
-		private readonly int mainWindowId = new System.Random().Next(int.MaxValue);
-		private readonly int optionsWindowId = new System.Random().Next(int.MaxValue);
-		private readonly int keymapperWindowId = new System.Random().Next(int.MaxValue);
-		private readonly int tripWindowId = new System.Random().Next(int.MaxValue);
-		private readonly int clockWindowId = new System.Random().Next(int.MaxValue);
-		private readonly int conicsWindowId = new System.Random().Next(int.MaxValue);
+		private readonly int mainWindowId = WindowId.GetNext();
+		private readonly int optionsWindowId = WindowId.GetNext();
+		private readonly int keymapperWindowId = WindowId.GetNext();
+		private readonly int tripWindowId = WindowId.GetNext();
+		private readonly int clockWindowId = WindowId.GetNext();
+		private readonly int conicsWindowId = WindowId.GetNext();
 
 		/// <summary>
 		/// Overridden function from MonoBehavior
 		/// </summary>
 		internal void Awake() {
+			Debug.Log(string.Format("main: {0}, options: {1}, keymapper: {2}, trip: {3}, clock: {4}, conics: {5}",
+				mainWindowId, optionsWindowId, keymapperWindowId, tripWindowId, clockWindowId, conicsWindowId));
+
 			CancelInvoke();
 			loadConfig();
 		}
