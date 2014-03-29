@@ -233,5 +233,37 @@ namespace RegexKSP {
 			}
 			return null;
 		}
+
+		internal static bool isClosed(this Orbit o) {
+			return o.patchEndTransition == Orbit.PatchTransitionType.FINAL;
+		}
+
+		internal static bool hasAP(this Orbit o) {
+			return o.isClosed();
+		}
+
+		internal static bool hasAN(this Orbit o, Orbit target) {
+			double ut;
+			if (target != null) {
+				ut = o.getTargetANUT(target);
+			} else {
+				ut = o.getEquatorialANUT();
+			}
+			return o.isUTInsidePatch(ut);
+		}
+
+		internal static bool hasDN(this Orbit o, Orbit target) {
+			double ut;
+			if (target != null) {
+				ut = o.getTargetDNUT(target);
+			} else {
+				ut = o.getEquatorialDNUT();
+			}
+			return o.isUTInsidePatch(ut);
+		}
+
+		internal static bool isUTInsidePatch(this Orbit o, double ut) {
+			return (ut >= Planetarium.GetUniversalTime()) && (o.isClosed() || (ut <= o.EndUT));
+		}
 	}
 }

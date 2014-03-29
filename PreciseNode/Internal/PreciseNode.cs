@@ -338,17 +338,22 @@ namespace RegexKSP {
 				curState.setUT(check);
 			}
 			GUI.contentColor = contentColor;
+			double currentUT = curState.currentUT();
 			double ut_increment = options.increment * (options.largeUTIncrement ? 10.0 : 1.0);
+			GUI.enabled = curState.node.patch.isUTInsidePatch(currentUT - ut_increment);
 			GUIParts.drawButton("-", Color.red, () => { curState.addUT(-ut_increment); });
+			GUI.enabled = true;
 			GUIParts.drawButton("+", Color.green, () => { curState.addUT(ut_increment); });
 			GUILayout.EndHorizontal();
 
 			// extended time controls
 			if(options.showUTControls) {
+				Orbit targ = NodeTools.getTargetOrbit();
+
 				GUILayout.BeginHorizontal();
 				GUIParts.drawButton("Peri", Color.yellow, () => { curState.setPeriapsis(); });
+				GUI.enabled = curState.node.patch.hasDN(targ);
 				GUIParts.drawButton("DN", Color.magenta, () => {
-					Orbit targ = NodeTools.getTargetOrbit();
 					if(targ != null) {
 						curState.setUT(curState.node.patch.getTargetDNUT(targ));
 					} else {
@@ -356,24 +361,30 @@ namespace RegexKSP {
 					}
 				});
 				if (options.largeUTIncrement) {
+					GUI.enabled = curState.node.patch.isUTInsidePatch(currentUT - curState.node.patch.period);
 					GUIParts.drawButton("-Orb", Color.red, () => { curState.addUT(-curState.node.patch.period); });
+					GUI.enabled = curState.node.patch.isUTInsidePatch(currentUT + curState.node.patch.period);
 					GUIParts.drawButton("+Orb", Color.green, () => { curState.addUT(curState.node.patch.period); });
 				} else {
+					GUI.enabled = curState.node.patch.isUTInsidePatch(currentUT - 1000);
 					GUIParts.drawButton("-1K", Color.red, () => { curState.addUT(-1000); });
+					GUI.enabled = true;
 					GUIParts.drawButton("+1K", Color.green, () => { curState.addUT(1000); });
 				}
+				GUI.enabled = curState.node.patch.hasAN(targ);
 				GUIParts.drawButton("AN", Color.cyan, () => {
-					Orbit targ = NodeTools.getTargetOrbit();
 					if(targ != null) {
 						curState.setUT(curState.node.patch.getTargetANUT(targ));
 					} else {
 						curState.setUT(curState.node.patch.getEquatorialANUT());
 					}
 				});
+				GUI.enabled = curState.node.patch.hasAP();
 				GUIParts.drawButton("Apo", Color.blue, () => { curState.setApoapsis(); });
 				GUILayout.EndHorizontal();
 			}
 
+			GUI.enabled = true;
 			GUI.backgroundColor = defaultColor;
 		}
 

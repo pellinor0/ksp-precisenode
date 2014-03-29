@@ -191,12 +191,10 @@ namespace RegexKSP {
 		}
 
 		internal void setPeriapsis() {
-			//TODO: Add look-ahead functionality if the current periapsis is non-existant.
 			setUT(Planetarium.GetUniversalTime() + node.patch.timeToPe);
 		}
 
 		internal void setApoapsis() {
-			//TODO: Add look-ahead functionality if the current apoapsis is non-existant.
 			setUT(Planetarium.GetUniversalTime() + node.patch.timeToAp);
 		}
 
