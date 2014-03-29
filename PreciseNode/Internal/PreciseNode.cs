@@ -284,9 +284,10 @@ namespace RegexKSP {
 			if(options.showEAngle) {
 				String eangle = "n/a";
 				if(FlightGlobals.ActiveVessel.orbit.referenceBody.name != "Sun") {
-					eangle = FlightGlobals.ActiveVessel.orbit.getEjectionAngle(curState.currentUT()).ToString("0.##") + "°";
+					double angle = FlightGlobals.ActiveVessel.orbit.getEjectionAngle(curState.currentUT());
+					eangle = Math.Abs(angle).ToString("0.##") + "° from " + ((angle >= 0) ? "prograde" : "retrograde");
 				}
-				GUIParts.drawDoubleLabel("Ejection angle:", 100, eangle, 130);
+				GUIParts.drawDoubleLabel("Ejection angle:", 100, eangle, 150);
 			}
 		}
 
