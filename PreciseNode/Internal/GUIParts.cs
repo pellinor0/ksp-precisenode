@@ -1,9 +1,10 @@
-using System;
+﻿using System;
 using UnityEngine;
 using KSP.IO;
 
 /******************************************************************************
  * Copyright (c) 2013-2014, Justin Bengtson
+ * Copyright (c) 2014, Maik Schreiber
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -50,34 +51,32 @@ namespace RegexKSP {
 		internal static void drawManeuverPager(NodeManager curState) {
 			PatchedConicSolver solver = NodeTools.getSolver();
 
+			int idx = solver.maneuverNodes.IndexOf(curState.node);
+			int count = solver.maneuverNodes.Count;
+
 			GUILayout.BeginHorizontal();
-			if(GUILayout.Button("<")) {
-				int count = solver.maneuverNodes.Count;
-				if(count > 1) {
-					// get the previous or last node
-					int idx = solver.maneuverNodes.IndexOf(curState.node);
-					if(idx == 0) {
-						curState.nextNode = solver.maneuverNodes[--count];
-					} else {
-						curState.nextNode = solver.maneuverNodes[--idx];
-					}
+
+			GUI.enabled = count > 1;
+			if (GUILayout.Button("◀")) {
+				if (idx > 0) {
+					curState.nextNode = solver.maneuverNodes[idx - 1];
+				} else {
+					curState.nextNode = solver.maneuverNodes[count - 1];
 				}
 			}
-			if(GUILayout.Button("Editing Node " + (solver.maneuverNodes.IndexOf(curState.node) + 1))) {
+			GUI.enabled = true;
+			if(GUILayout.Button("Editing Node " + (idx + 1))) {
 				MapView.MapCamera.SetTarget(curState.node.scaledSpaceTarget);
 			}
-			if(GUILayout.Button(">")) {
-				int count = solver.maneuverNodes.Count;
-				if(count > 1) {
-					// get the previous or last node
-					int idx = solver.maneuverNodes.IndexOf(curState.node);
-					if(idx == count - 1) {
-						curState.nextNode = solver.maneuverNodes[0];
-					} else {
-						curState.nextNode = solver.maneuverNodes[++idx];
-					}
+			GUI.enabled = count > 1;
+			if (GUILayout.Button("▶")) {
+				if (idx < (count - 1)) {
+					curState.nextNode = solver.maneuverNodes[idx + 1];
+				} else {
+					curState.nextNode = solver.maneuverNodes[0];
 				}
 			}
+			GUI.enabled = true;
 			GUILayout.EndHorizontal();
 		}
 	}

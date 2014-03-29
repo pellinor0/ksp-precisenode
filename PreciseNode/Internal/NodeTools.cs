@@ -91,22 +91,22 @@ namespace RegexKSP {
 		/// <param name="UT">Kerbal Space Program Universal Time.</param>
 		internal static String convertUTtoHumanDuration(double UT) {
 			double temp = Math.Floor(Math.Abs(UT % 60));
-			string retval = (long)temp + "s";
+			string retval = (long)temp + " s";
 			if(Math.Abs(UT / 60) > 1.0) {
 				temp = Math.Floor(Math.Abs((UT / 60) % 60));
-				retval = (long)temp + "m, " + retval;
+				retval = (long)temp + " m " + retval;
 			}
 			if(Math.Abs(UT / 3600) > 1.0) {
 				temp = Math.Floor(Math.Abs((UT / 3600) % 24));
-				retval = (long)temp + "h, " + retval;
+				retval = (long)temp + " h " + retval;
 			}
 			if(Math.Abs(UT / 86400) > 1.0) {
 				temp = Math.Floor(Math.Abs((UT / 86400) % 365));
-				retval = ((long)temp + 1) + "d, " + retval;
+				retval = ((long)temp + 1) + " d " + retval;
 			}
 			if(Math.Abs(UT / (86400 * 365)) > 1.0) {
 				temp = Math.Floor(Math.Abs(UT / (86400 * 365)));
-				retval = ((long)temp + 1) + "y, " + retval;
+				retval = ((long)temp + 1) + " y " + retval;
 			}
 			return retval;
 		}
@@ -161,13 +161,13 @@ namespace RegexKSP {
 		internal static string formatMeters(double d) {
 			if(Math.Abs(d / 1000000.0) > 1) {
 				// format as kilometers.
-				return (d/1000.0).ToString("0.##") + "km";
+				return (d/1000.0).ToString("0.##") + " km";
 			} else {
 				// use meters
 				if(Math.Abs(d) > 100000.0) {
-					return d.ToString("F0") + "m";
+					return d.ToString("F0") + " m";
 				} else {
-					return d.ToString("0.##") + "m";
+					return d.ToString("0.##") + " m";
 				}
 			}
 		}
