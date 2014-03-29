@@ -67,6 +67,13 @@ namespace RegexKSP {
 		private Key currentWaitKey = Key.NONE;
 		private double keyWaitTime = 0.0;
 
+		private readonly int mainWindowId = new System.Random().Next(int.MaxValue);
+		private readonly int optionsWindowId = new System.Random().Next(int.MaxValue);
+		private readonly int keymapperWindowId = new System.Random().Next(int.MaxValue);
+		private readonly int tripWindowId = new System.Random().Next(int.MaxValue);
+		private readonly int clockWindowId = new System.Random().Next(int.MaxValue);
+		private readonly int conicsWindowId = new System.Random().Next(int.MaxValue);
+
 		/// <summary>
 		/// Overridden function from MonoBehavior
 		/// </summary>
@@ -168,15 +175,19 @@ namespace RegexKSP {
 		/// </summary>
 		private void drawGUI() {
 			GUI.skin = null;
-			options.mainWindowPos = GUILayout.Window(21349, options.mainWindowPos, drawMainWindow, "Precise Node", GUILayout.ExpandHeight(true));
+			options.mainWindowPos = GUILayout.Window(mainWindowId, options.mainWindowPos, (id) => drawMainWindow(),
+				"Precise Node", GUILayout.ExpandHeight(true));
 			if(showOptions) {
-				options.optionsWindowPos = GUILayout.Window(21350, options.optionsWindowPos, drawOptionsWindow, "Precise Node Options", GUILayout.ExpandHeight(true));
+				options.optionsWindowPos = GUILayout.Window(optionsWindowId, options.optionsWindowPos, (id) => drawOptionsWindow(),
+					"Precise Node Options", GUILayout.ExpandHeight(true));
 			}
 			if(showKeymapper) {
-				options.keymapperWindowPos = GUILayout.Window(21351, options.keymapperWindowPos, drawKeymapperWindow, "Precise Node Keys", GUILayout.ExpandHeight(true));
+				options.keymapperWindowPos = GUILayout.Window(keymapperWindowId, options.keymapperWindowPos, (id) => drawKeymapperWindow(),
+					"Precise Node Keys", GUILayout.ExpandHeight(true));
 			}
 			if(options.showTrip) {
-				options.tripWindowPos = GUILayout.Window(21352, options.tripWindowPos, drawTripWindow, "Trip Info", GUILayout.ExpandHeight(true));
+				options.tripWindowPos = GUILayout.Window(tripWindowId, options.tripWindowPos, (id) => drawTripWindow(),
+					"Trip Info", GUILayout.ExpandHeight(true));
 			}
 		}
 
@@ -185,7 +196,8 @@ namespace RegexKSP {
 		/// </summary>
 		private void drawClockGUI() {
 			GUI.skin = null;
-			options.clockWindowPos = GUILayout.Window(21353, options.clockWindowPos, drawClockWindow, "Clock", GUILayout.ExpandHeight(true));
+			options.clockWindowPos = GUILayout.Window(clockWindowId, options.clockWindowPos, (id) => drawClockWindow(),
+				"Clock", GUILayout.ExpandHeight(true));
 		}
 
 		/// <summary>
@@ -193,14 +205,14 @@ namespace RegexKSP {
 		/// </summary>
 		private void drawConicsGUI() {
 			GUI.skin = null;
-			options.conicsWindowPos = GUILayout.Window(21354, options.conicsWindowPos, drawConicsWindow, "Conics Controls", GUILayout.ExpandHeight(true));
+			options.conicsWindowPos = GUILayout.Window(conicsWindowId, options.conicsWindowPos, (id) => drawConicsWindow(),
+				"Conics Controls", GUILayout.ExpandHeight(true));
 		}
 
 		/// <summary>
 		/// Draws the Node Editor window.
 		/// </summary>
-		/// <param name="id">Identifier.</param>
-		private void drawMainWindow(int id) {
+		private void drawMainWindow() {
 			Color defaultColor = GUI.backgroundColor;
 			Color contentColor = GUI.contentColor;
 			Color curColor = defaultColor;
@@ -416,8 +428,7 @@ namespace RegexKSP {
 		/// <summary>
 		/// Draws the Clock window.
 		/// </summary>
-		/// <param name="id">Identifier.</param>
-		private void drawClockWindow(int id) {
+		private void drawClockWindow() {
 			Color defaultColor = GUI.backgroundColor;
 			double timeNow = Planetarium.GetUniversalTime();
 			String timeUT = timeNow.ToString("F0");
@@ -451,8 +462,7 @@ namespace RegexKSP {
 		/// <summary>
 		/// Draws the Conics window.
 		/// </summary>
-		/// <param name="id">Identifier.</param>
-		private void drawConicsWindow(int id) {
+		private void drawConicsWindow() {
 			GUILayout.BeginVertical();
 			GUIParts.drawConicsControls(options);
 			GUILayout.EndVertical();
@@ -462,8 +472,7 @@ namespace RegexKSP {
 		/// <summary>
 		/// Draws the Options window.
 		/// </summary>
-		/// <param name="id">Identifier.</param>
-		private void drawOptionsWindow(int id) {
+		private void drawOptionsWindow() {
 			Color defaultColor = GUI.backgroundColor;
 
 			// Close button
@@ -516,8 +525,7 @@ namespace RegexKSP {
 		/// <summary>
 		/// Draws the Keymapper window.
 		/// </summary>
-		/// <param name="id">Identifier.</param>
-		private void drawKeymapperWindow(int id) {
+		private void drawKeymapperWindow() {
 			Color defaultColor = GUI.backgroundColor;
 
 			// Close button
@@ -566,7 +574,7 @@ namespace RegexKSP {
 			GUILayout.EndHorizontal();
 		}
 
-		private void drawTripWindow(int id) {
+		private void drawTripWindow() {
 			PatchedConicSolver solver = NodeTools.getSolver();
 
 			GUILayout.BeginVertical();
