@@ -550,74 +550,42 @@ namespace RegexKSP {
 			GUILayout.BeginVertical();
 
 			// Set window control
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("Hide/show window: " + options.hideWindow.ToString(), GUILayout.Width(200));
-			GUIParts.drawButton("Set", defaultColor, () => { doWaitForKey("Press a key to bind hide/show window...", Key.HIDEWINDOW); });
-			GUILayout.EndHorizontal();
+			drawKeyControls("Hide/show window", Key.HIDEWINDOW, options.hideWindow);
 
 			// Set add node widget button
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("Open node gizmo: " + options.addWidget.ToString(), GUILayout.Width(200));
-			GUIParts.drawButton("Set", defaultColor, () => { doWaitForKey("Press a key to bind open node gizmo...", Key.ADDWIDGET); });
-			GUILayout.EndHorizontal();
+			drawKeyControls("Open node gizmo", Key.ADDWIDGET, options.addWidget);
 
 			// Set prograde controls
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("Increment prograde: " + options.progInc.ToString(), GUILayout.Width(200));
-			GUIParts.drawButton("Set", defaultColor, () => { doWaitForKey("Press a key to bind increment prograde...", Key.PROGINC); });
-			GUILayout.EndHorizontal();
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("Decrement prograde: " + options.progDec.ToString(), GUILayout.Width(200));
-			GUIParts.drawButton("Set", defaultColor, () => { doWaitForKey("Press a key to bind decrement prograde...", Key.PROGDEC); });
-			GUILayout.EndHorizontal();
+			drawKeyControls("Increment prograde", Key.PROGINC, options.progInc);
+			drawKeyControls("Decrement prograde", Key.PROGDEC, options.progDec);
 
 			// set normal controls
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("Increment normal: " + options.normInc.ToString(), GUILayout.Width(200));
-			GUIParts.drawButton("Set", defaultColor, () => { doWaitForKey("Press a key to bind increment normal...", Key.NORMINC); });
-			GUILayout.EndHorizontal();
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("Decrement normal: " + options.normDec.ToString(), GUILayout.Width(200));
-			GUIParts.drawButton("Set", defaultColor, () => { doWaitForKey("Press a key to bind decrement normal...", Key.NORMDEC); });
-			GUILayout.EndHorizontal();
+			drawKeyControls("Increment normal", Key.NORMINC, options.normInc);
+			drawKeyControls("Decrement normal", Key.NORMDEC, options.normDec);
 
 			// set radial controls
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("Increment radial: " + options.radiInc.ToString(), GUILayout.Width(200));
-			GUIParts.drawButton("Set", defaultColor, () => { doWaitForKey("Press a key to bind increment radial...", Key.RADIINC); });
-			GUILayout.EndHorizontal();
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("Decrement radial: " + options.radiDec.ToString(), GUILayout.Width(200));
-			GUIParts.drawButton("Set", defaultColor, () => { doWaitForKey("Press a key to bind decrement radial...", Key.RADIDEC); });
-			GUILayout.EndHorizontal();
+			drawKeyControls("Increment radial", Key.RADIINC, options.radiInc);
+			drawKeyControls("Decrement radial", Key.RADIDEC, options.radiDec);
 
 			// set time controls
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("Increment time: " + options.timeInc.ToString(), GUILayout.Width(200));
-			GUIParts.drawButton("Set", defaultColor, () => { doWaitForKey("Press a key to bind increment time...", Key.TIMEINC); });
-			GUILayout.EndHorizontal();
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("Decrement time: " + options.timeDec.ToString(), GUILayout.Width(200));
-			GUIParts.drawButton("Set", defaultColor, () => { doWaitForKey("Press a key to bind decrement time...", Key.TIMEDEC); });
-			GUILayout.EndHorizontal();
+			drawKeyControls("Increment time", Key.TIMEINC, options.timeInc);
+			drawKeyControls("Decrement time", Key.TIMEDEC, options.timeDec);
 
 			// set paging controls
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("Page increment: " + options.pageIncrement.ToString(), GUILayout.Width(200));
-			GUIParts.drawButton("Set", defaultColor, () => { doWaitForKey("Press a key to bind page increment...", Key.PAGEINC); });
-			GUILayout.EndHorizontal();
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("Page conics: " + options.pageConics.ToString(), GUILayout.Width(200));
-			GUIParts.drawButton("Set", defaultColor, () => { doWaitForKey("Press a key to bind page conics mode...", Key.PAGECON); });
-			GUILayout.EndHorizontal();
+			drawKeyControls("Page increment", Key.PAGEINC, options.pageIncrement);
+			drawKeyControls("Page conics", Key.PAGECON, options.pageConics);
 
 			GUILayout.EndVertical();
 			GUI.DragWindow();
+		}
+
+		private void drawKeyControls(string title, Key key, KeyCode currentKeyCode) {
+			GUILayout.BeginHorizontal();
+			GUILayout.Label(title + ": " + currentKeyCode.ToString(), GUILayout.Width(200));
+			GUIParts.drawButton("Set", GUI.backgroundColor, () => {
+				doWaitForKey("Press a key to bind " + title.ToLower() + "...", key);
+			});
+			GUILayout.EndHorizontal();
 		}
 
 		private void drawTripWindow(int id) {
