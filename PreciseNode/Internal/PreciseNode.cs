@@ -262,7 +262,6 @@ namespace RegexKSP {
 			GUI.DragWindow();
 		}
 
-		// debugging function
 		private void drawEAngle() {
 			// Ejection angle
 			if(options.showEAngle) {
@@ -274,7 +273,6 @@ namespace RegexKSP {
 			}
 		}
 
-		// debugging function
 		private void drawEncounter(Color defaultColor) {
 			// Additional Information
 			if(options.showOrbitInfo) {
@@ -308,7 +306,6 @@ namespace RegexKSP {
 			}
 		}
 
-		// debugging function
 		private void drawTimeControls(Color contentColor) {
 			Color defaultColor = GUI.backgroundColor;
 
