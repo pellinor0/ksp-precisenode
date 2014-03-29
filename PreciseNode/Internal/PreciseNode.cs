@@ -250,21 +250,7 @@ namespace RegexKSP {
 			drawEncounter(defaultColor);
 
 			// Conics mode controls
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("Conics mode: ", GUILayout.Width(100));
-			GUIParts.drawButton("0", (options.conicsMode == 0?Color.yellow:defaultColor), () => { options.setConicsMode(0); });
-			GUIParts.drawButton("1", (options.conicsMode == 1?Color.yellow:defaultColor), () => { options.setConicsMode(1); });
-			GUIParts.drawButton("2", (options.conicsMode == 2?Color.yellow:defaultColor), () => { options.setConicsMode(2); });
-			GUIParts.drawButton("3", (options.conicsMode == 3?Color.yellow:defaultColor), () => { options.setConicsMode(3); });
-			GUIParts.drawButton("4", (options.conicsMode == 4?Color.yellow:defaultColor), () => { options.setConicsMode(4); });
-			GUILayout.EndHorizontal();
-			
-			// conics patch limit editor.
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("Change conics samples:", GUILayout.Width(200));
-			GUIParts.drawButton("-", Color.red, () => { solver.DecreasePatchLimit(); });
-			GUIParts.drawButton("+", Color.red, () => { solver.IncreasePatchLimit(); });
-			GUILayout.EndHorizontal();
+			GUIParts.drawConicsControls(options);
 			
 			// trip info button and vessel focus buttons
 			GUILayout.BeginHorizontal();
@@ -324,6 +310,8 @@ namespace RegexKSP {
 
 		// debugging function
 		private void drawTimeControls(Color contentColor) {
+			Color defaultColor = GUI.backgroundColor;
+
 			// Universal time controls
 			GUILayout.BeginHorizontal();
 			GUILayout.Label((options.largeUTIncrement?"UT: (x10 inc)":"UT:"), GUILayout.Width(100));
@@ -371,6 +359,8 @@ namespace RegexKSP {
 				GUIParts.drawButton("Apo", Color.blue, () => { curState.setApoapsis(); });
 				GUILayout.EndHorizontal();
 			}
+
+			GUI.backgroundColor = defaultColor;
 		}
 
 		private void drawProgradeControls(Color contentColor) {
@@ -464,28 +454,8 @@ namespace RegexKSP {
 		/// </summary>
 		/// <param name="id">Identifier.</param>
 		private void drawConicsWindow(int id) {
-			PatchedConicSolver solver = NodeTools.getSolver();
-			Color defaultColor = GUI.backgroundColor;
-
 			GUILayout.BeginVertical();
-
-			// Conics mode controls
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("Conics mode: ", GUILayout.Width(100));
-			GUIParts.drawButton("0", (options.conicsMode == 0?Color.yellow:defaultColor), () => { options.setConicsMode(0); });
-			GUIParts.drawButton("1", (options.conicsMode == 1?Color.yellow:defaultColor), () => { options.setConicsMode(1); });
-			GUIParts.drawButton("2", (options.conicsMode == 2?Color.yellow:defaultColor), () => { options.setConicsMode(2); });
-			GUIParts.drawButton("3", (options.conicsMode == 3?Color.yellow:defaultColor), () => { options.setConicsMode(3); });
-			GUIParts.drawButton("4", (options.conicsMode == 4?Color.yellow:defaultColor), () => { options.setConicsMode(4); });
-			GUILayout.EndHorizontal();
-
-			// conics patch limit editor.
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("Change Conics Samples", GUILayout.Width(200));
-			GUIParts.drawButton("-", Color.red, () => { solver.DecreasePatchLimit(); });
-			GUIParts.drawButton("+", Color.red, () => { solver.IncreasePatchLimit(); });
-			GUILayout.EndHorizontal();
-
+			GUIParts.drawConicsControls(options);
 			GUILayout.EndVertical();
 			GUI.DragWindow();
 		}

@@ -79,5 +79,31 @@ namespace RegexKSP {
 			GUI.enabled = true;
 			GUILayout.EndHorizontal();
 		}
+
+		internal static void drawConicsControls(PNOptions options) {
+			PatchedConicSolver solver = NodeTools.getSolver();
+			Color defaultColor = GUI.backgroundColor;
+			
+			// Conics mode controls
+			GUILayout.BeginHorizontal();
+			GUILayout.Label("Conics mode: ", GUILayout.Width(100));
+			for (int mode = 0; mode <= 4; mode++) {
+				GUIParts.drawButton(mode.ToString(), (options.conicsMode == mode) ? Color.yellow : defaultColor, () => {
+					options.setConicsMode(mode);
+				});
+			}
+			GUILayout.EndHorizontal();
+
+			// conics patch limit editor.
+			GUILayout.BeginHorizontal();
+			GUILayout.Label("Change conics samples:", GUILayout.Width(200));
+			GUIParts.drawButton("-", Color.red, () => {
+				solver.DecreasePatchLimit();
+			});
+			GUIParts.drawButton("+", Color.red, () => {
+				solver.IncreasePatchLimit();
+			});
+			GUILayout.EndHorizontal();
+		}
 	}
 }
