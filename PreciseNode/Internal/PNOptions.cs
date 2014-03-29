@@ -33,14 +33,15 @@ using UnityEngine;
 
 namespace RegexKSP {
 	internal class PNOptions {
-		internal Rect mainWindowPos = new Rect(Screen.width / 10, 20, 250, 130);
-		internal Rect optionsWindowPos = new Rect(Screen.width / 3, 20, 250, 130);
-		internal Rect keymapperWindowPos = new Rect(Screen.width / 5, 20, 250, 130);
-		internal Rect clockWindowPos = new Rect(Screen.width / 3, Screen.height / 2, 195, 65);
-		internal Rect conicsWindowPos = new Rect(Screen.width / 5, Screen.height / 2, 250, 65);
-		internal Rect tripWindowPos = new Rect(Screen.width / 5, Screen.height / 5, 320, 65);
+		internal Rect mainWindowPos = new Rect(Screen.width / 10, 20, 0, 0);
+		internal Rect optionsWindowPos = new Rect(Screen.width / 3, 20, 0, 0);
+		internal Rect keymapperWindowPos = new Rect(Screen.width / 5, 20, 0, 0);
+		internal Rect clockWindowPos = new Rect(Screen.width / 3, Screen.height / 2, 0, 0);
+		internal Rect conicsWindowPos = new Rect(Screen.width / 5, Screen.height / 2, 0, 0);
+		internal Rect tripWindowPos = new Rect(Screen.width / 5, Screen.height / 5, 0, 0);
 
 		internal bool showManeuverPager = true;
+		internal bool showConics = true;
 		internal bool showConicsAlways = false;
 		internal bool showClock = false;
 		internal bool showTrip = false;

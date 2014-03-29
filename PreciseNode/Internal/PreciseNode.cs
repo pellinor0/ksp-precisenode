@@ -136,10 +136,10 @@ namespace RegexKSP {
 				if(Event.current.type == EventType.Layout && !FlightDriver.Pause) {
 					// On layout we should see if we have nodes to act on.
 					if(curState.resizeMainWindow) {
-						options.mainWindowPos.height = 250;
+						options.mainWindowPos.height = 0;
 					}
 					if(curState.resizeClockWindow) {
-						options.clockWindowPos.height = 65;
+						options.clockWindowPos.height = 0;
 					}
 					showEncounter = curState.encounter;
 					// this prevents the clock window from showing the time to
@@ -250,7 +250,9 @@ namespace RegexKSP {
 			drawEncounter(defaultColor);
 
 			// Conics mode controls
-			GUIParts.drawConicsControls(options);
+			if (options.showConics) {
+				GUIParts.drawConicsControls(options);
+			}
 			
 			// trip info button and vessel focus buttons
 			GUILayout.BeginHorizontal();
@@ -470,10 +472,19 @@ namespace RegexKSP {
 			}
 
 			GUILayout.BeginVertical();
-			options.showConicsAlways = GUILayout.Toggle(options.showConicsAlways, "Always show conics controls");
-			options.showClock = GUILayout.Toggle(options.showClock, "Show clock");
+
 			// use a temp variable so we can check whether the main window needs resizing.
-			bool temp = GUILayout.Toggle(options.showManeuverPager, "Show maneuver pager");
+			bool temp;
+
+			temp = GUILayout.Toggle(options.showConics, "Show conics controls");
+			if (temp != options.showConics) {
+				options.showConics = temp;
+				curState.resizeMainWindow = true;
+			}
+
+			options.showConicsAlways = GUILayout.Toggle(options.showConicsAlways, "Show conics window");
+			options.showClock = GUILayout.Toggle(options.showClock, "Show clock");
+			temp = GUILayout.Toggle(options.showManeuverPager, "Show maneuver pager");
 			if(temp != options.showManeuverPager) {
 				options.showManeuverPager = temp;
 				curState.resizeMainWindow = true;
@@ -787,6 +798,7 @@ namespace RegexKSP {
 					options.tripWindowPos.y = config.GetValue<int>("tripWindowY", Screen.height / 5);
 					options.showClock = config.GetValue<bool>("showClock", false);
 					options.showEAngle = config.GetValue<bool>("showEAngle", true);
+					options.showConics = config.GetValue<bool>("showConics", true);
 					options.showConicsAlways = config.GetValue<bool>("showConicsAlways", false);
 					options.showOrbitInfo = config.GetValue<bool>("showOrbitInfo", false);
 					options.showUTControls = config.GetValue<bool>("showUTControls", false);
@@ -863,6 +875,7 @@ namespace RegexKSP {
 			config["tripWindowY"] = (int)options.tripWindowPos.y;
 			config["showClock"] = options.showClock;
 			config["showEAngle"] = options.showEAngle;
+			config["showConics"] = options.showConics;
 			config["showConicsAlways"] = options.showConicsAlways;
 			config["showOrbitInfo"] = options.showOrbitInfo;
 			config["showUTControls"] = options.showUTControls;
