@@ -5,6 +5,7 @@ using KSP.IO;
 
 /******************************************************************************
  * Copyright (c) 2013-2014, Justin Bengtson
+ * Copyright (c) 2014, Maik Schreiber
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -220,6 +221,22 @@ namespace RegexKSP {
 			}
 
 			return eangle;
+		}
+
+		internal static double getEjectionInclination(this Orbit o, ManeuverNode node) {
+			CelestialBody body = o.referenceBody;
+			Vector3d bodyNormal = body.orbit.GetOrbitNormal().xzy.normalized;
+			Orbit orbitAfterNode = o.applyDeltaV(node.DeltaV, node.UT);
+			Vector3d nodeNormal = orbitAfterNode.GetOrbitNormal().xzy.normalized;
+			double angle = Vector3d.Angle(bodyNormal, nodeNormal);
+			bool south = Vector3d.Dot(Vector3d.Cross(bodyNormal, nodeNormal), bodyNormal.xzy) > 0;
+			return south ? -angle : angle;
+		}
+
+		internal static Orbit applyDeltaV(this Orbit o, Vector3d deltaV, double ut) {
+			Orbit result = new Orbit();
+			result.UpdateFromStateVectors(o.getRelativePositionAtUT(ut), (o.getOrbitalVelocityAtUT(ut).xzy + deltaV).xzy, o.referenceBody, ut);
+			return result;
 		}
 
 		internal static Orbit findNextEncounter(this ManeuverNode node) {

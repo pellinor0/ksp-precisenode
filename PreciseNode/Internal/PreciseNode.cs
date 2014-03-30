@@ -288,6 +288,13 @@ namespace RegexKSP {
 					eangle = Math.Abs(angle).ToString("0.##") + "° from " + ((angle >= 0) ? "prograde" : "retrograde");
 				}
 				GUIParts.drawDoubleLabel("Ejection angle:", 100, eangle, 150);
+
+				String einclination = "n/a";
+				if (FlightGlobals.ActiveVessel.orbit.referenceBody.name != "Sun") {
+					double angle = FlightGlobals.ActiveVessel.orbit.getEjectionInclination(curState.node);
+					einclination = Math.Abs(angle).ToString("0.##") + "° " + ((angle >= 0) ? "north" : "south");
+				}
+				GUIParts.drawDoubleLabel("Eject. inclination:", 100, einclination, 150);
 			}
 		}
 
