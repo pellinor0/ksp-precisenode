@@ -65,7 +65,7 @@ namespace RegexKSP {
 			const int major = 0;
 			const int minor = 23;
 			const int revision = 5;
-			const int build = 453;
+			const int build = 464;
 
 			return (Versioning.version_major == major) &&
 				(Versioning.version_minor == minor) &&
