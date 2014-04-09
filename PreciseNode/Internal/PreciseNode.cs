@@ -523,9 +523,9 @@ namespace RegexKSP {
 					next = timeNow - NodeTools.getSolver().maneuverNodes[0].UT;
 				}
 				if(next < 0) {
-					labelText = "T- " + next.convertUTtoHumanDuration();
+					labelText = "T-" + next.convertUTtoHumanDuration();
 				} else {
-					labelText = "T+ " + next.convertUTtoHumanDuration();
+					labelText = "T+" + next.convertUTtoHumanDuration();
 				}
 				GUIParts.drawDoubleLabel("Next:", 35, labelText, 150);
 			}
@@ -567,7 +567,7 @@ namespace RegexKSP {
 			}
 
 			options.showConicsAlways = GUILayout.Toggle(options.showConicsAlways, "Show conics window");
-			options.showClock = GUILayout.Toggle(options.showClock, "Show clock");
+			options.showClock = GUILayout.Toggle(options.showClock, "Show clock window");
 			temp = GUILayout.Toggle(options.showManeuverPager, "Show maneuver pager");
 			if(temp != options.showManeuverPager) {
 				options.showManeuverPager = temp;
