@@ -57,6 +57,7 @@
     <Compile Include="Internal\NodeTools.cs" />
     <Compile Include="Internal\PNOptions.cs" />
     <Compile Include="Internal\PreciseNode.cs" />
+    <Compile Include="Internal\UpdateChecker.cs" />
     <Compile Include="Internal\WindowId.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

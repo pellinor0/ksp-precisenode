@@ -49,7 +49,11 @@ namespace RegexKSP {
 			HIDEWINDOW,
 			ADDWIDGET
 		};
-		
+
+		internal static int VERSION = 1;
+
+		private static bool? updateAvailable;
+
 		internal PluginConfiguration config;
 
 		private PNOptions options = new PNOptions();
@@ -74,15 +78,22 @@ namespace RegexKSP {
 		private readonly int clockWindowId = WindowId.GetNext();
 		private readonly int conicsWindowId = WindowId.GetNext();
 
+		private UpdateChecker updateChecker;
+
 		/// <summary>
 		/// Overridden function from MonoBehavior
 		/// </summary>
 		internal void Awake() {
-			Debug.Log(string.Format("main: {0}, options: {1}, keymapper: {2}, trip: {3}, clock: {4}, conics: {5}",
-				mainWindowId, optionsWindowId, keymapperWindowId, tripWindowId, clockWindowId, conicsWindowId));
-
 			CancelInvoke();
 			loadConfig();
+
+			if (updateAvailable == null) {
+				updateChecker = new UpdateChecker();
+				updateChecker.OnDone += () => {
+					updateAvailable = updateChecker.UpdateAvailable;
+					updateChecker = null;
+				};
+			}
 		}
 
 		/// <summary>
@@ -113,6 +124,10 @@ namespace RegexKSP {
                     }
                 }
                 processKeyInput();
+			}
+
+			if (updateChecker != null) {
+				updateChecker.update();
 			}
 		}
 
@@ -540,6 +555,15 @@ namespace RegexKSP {
 			options.removeUsedNodes = GUILayout.Toggle(options.removeUsedNodes, "Remove used nodes");
             //TODO: Add threshold controls for removing used nodes
 #endif
+
+			if (updateAvailable == true) {
+				GUILayout.Space(5);
+				Color oldColor = GUI.color;
+				GUI.color = Color.yellow;
+				GUILayout.Label("An update to this plugin is available.");
+				GUI.color = oldColor;
+			}
+
 			GUILayout.EndVertical();
 			GUI.DragWindow();
 		}
