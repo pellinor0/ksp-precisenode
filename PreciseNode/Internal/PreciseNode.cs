@@ -488,6 +488,9 @@ namespace RegexKSP {
 			if (GUILayout.Button("Editing Node " + (idx + 1))) {
 				MapView.MapCamera.SetTarget(curState.node.scaledSpaceTarget);
 			}
+			GUIParts.drawButton("Del", Color.red, () => {
+				solver.RemoveManeuverNode(curState.node);
+			});
 			GUI.enabled = count > 1;
 			if (GUILayout.Button("▶")) {
 				if (idx < (count - 1)) {
