@@ -287,7 +287,10 @@ namespace RegexKSP {
 			// trip info button and vessel focus buttons
 			GUILayout.BeginHorizontal();
 			GUIParts.drawButton("Trip Info", (options.showTrip?Color.yellow:defaultColor), () => { options.showTrip = !options.showTrip; });
-			GUIParts.drawButton("Focus on Vessel", defaultColor, () => { MapView.MapCamera.SetTarget(FlightGlobals.ActiveVessel.vesselName); });
+			GUIParts.drawButton("Focus on Vessel", defaultColor, () => {
+				MapObject mapObject = PlanetariumCamera.fetch.targets.Find(o => (o.vessel != null) && o.vessel.Equals(FlightGlobals.ActiveVessel));
+				MapView.MapCamera.SetTarget(mapObject);
+			});
 			GUILayout.EndHorizontal();
 			
 			GUILayout.EndVertical();
@@ -334,7 +337,10 @@ namespace RegexKSP {
 					GUIParts.drawDoubleLabel("(" + name + ") Pe:", 100, PeA, 130);
 					GUILayout.BeginHorizontal();
 					GUILayout.Label("", GUILayout.Width(100));
-					GUIParts.drawButton("Focus on " + theName, defaultColor, () => { MapView.MapCamera.SetTarget(name); });
+					GUIParts.drawButton("Focus on " + theName, defaultColor, () => {
+						MapObject mapObject = PlanetariumCamera.fetch.targets.Find(o => (o.celestialBody != null) && (o.celestialBody.name == name));
+						MapView.MapCamera.SetTarget(mapObject);
+					});
 					GUILayout.EndHorizontal();
 				} else {
 					if(curState.node.solver.flightPlan.Count > 1) {
