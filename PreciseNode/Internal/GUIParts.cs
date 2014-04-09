@@ -48,38 +48,6 @@ namespace RegexKSP {
 			GUI.backgroundColor = defaultColor;
 		}
 
-		internal static void drawManeuverPager(NodeManager curState) {
-			PatchedConicSolver solver = NodeTools.getSolver();
-
-			int idx = solver.maneuverNodes.IndexOf(curState.node);
-			int count = solver.maneuverNodes.Count;
-
-			GUILayout.BeginHorizontal();
-
-			GUI.enabled = count > 1;
-			if (GUILayout.Button("◀")) {
-				if (idx > 0) {
-					curState.nextNode = solver.maneuverNodes[idx - 1];
-				} else {
-					curState.nextNode = solver.maneuverNodes[count - 1];
-				}
-			}
-			GUI.enabled = true;
-			if(GUILayout.Button("Editing Node " + (idx + 1))) {
-				MapView.MapCamera.SetTarget(curState.node.scaledSpaceTarget);
-			}
-			GUI.enabled = count > 1;
-			if (GUILayout.Button("▶")) {
-				if (idx < (count - 1)) {
-					curState.nextNode = solver.maneuverNodes[idx + 1];
-				} else {
-					curState.nextNode = solver.maneuverNodes[0];
-				}
-			}
-			GUI.enabled = true;
-			GUILayout.EndHorizontal();
-		}
-
 		internal static void drawConicsControls(PNOptions options) {
 			PatchedConicSolver solver = NodeTools.getSolver();
 			Color defaultColor = GUI.backgroundColor;

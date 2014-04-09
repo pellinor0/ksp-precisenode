@@ -252,7 +252,7 @@ namespace RegexKSP {
 
 			GUILayout.BeginVertical();
 			if(options.showManeuverPager) {
-				GUIParts.drawManeuverPager(curState);
+				drawManeuverPager();
 			}
 
 			// Human-readable time
@@ -462,6 +462,38 @@ namespace RegexKSP {
 			GUILayout.EndHorizontal();
 		}
 
+		private void drawManeuverPager() {
+			PatchedConicSolver solver = NodeTools.getSolver();
+
+			int idx = solver.maneuverNodes.IndexOf(curState.node);
+			int count = solver.maneuverNodes.Count;
+
+			GUILayout.BeginHorizontal();
+
+			GUI.enabled = count > 1;
+			if (GUILayout.Button("◀")) {
+				if (idx > 0) {
+					curState.nextNode = solver.maneuverNodes[idx - 1];
+				} else {
+					curState.nextNode = solver.maneuverNodes[count - 1];
+				}
+			}
+			GUI.enabled = true;
+			if (GUILayout.Button("Editing Node " + (idx + 1))) {
+				MapView.MapCamera.SetTarget(curState.node.scaledSpaceTarget);
+			}
+			GUI.enabled = count > 1;
+			if (GUILayout.Button("▶")) {
+				if (idx < (count - 1)) {
+					curState.nextNode = solver.maneuverNodes[idx + 1];
+				} else {
+					curState.nextNode = solver.maneuverNodes[0];
+				}
+			}
+			GUI.enabled = true;
+			GUILayout.EndHorizontal();
+		}
+		
 		/// <summary>
 		/// Draws the Clock window.
 		/// </summary>
