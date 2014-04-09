@@ -16,6 +16,11 @@ Hide Window: P
 Open Node: O
 
 
+0.11, 2014-04-09
+- The button "Focus Vessel" should now work as intended.
+- Time and duration displays should now honor the Earth time/Kerbin time setting.
+- Added a button to delete the current maneuver node.
+
 0.10, 2014-04-02
 - Added a new option to show/hide conics controls in the main window.
 - In addition to the ejection angle, the ejection inclination will be displayed.
