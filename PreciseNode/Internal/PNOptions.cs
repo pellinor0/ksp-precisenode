@@ -42,15 +42,15 @@ namespace RegexKSP {
 
 		internal bool showManeuverPager = true;
 		internal bool showConics = true;
-		internal bool showConicsAlways = false;
-		internal bool showClock = false;
-		internal bool showTrip = false;
-		internal bool showUTControls = false;
+		internal bool showConicsAlways;
+		internal bool showClock;
+		internal bool showTrip;
+		internal bool showUTControls;
 		internal bool showEAngle = true;
-		internal bool showOrbitInfo = false;
-		internal bool removeUsedNodes = false;
+		internal bool showOrbitInfo;
+		internal bool removeUsedNodes;
 
-		internal bool largeUTIncrement = false;
+		internal bool largeUTIncrement;
 
 		internal KeyCode progInc = KeyCode.Keypad8;
 		internal KeyCode progDec = KeyCode.Keypad5;

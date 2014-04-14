@@ -60,14 +60,14 @@ namespace RegexKSP {
 		private NodeManager curState = new NodeManager();
 		private List<Action> scheduledForLayout = new List<Action>();
 
-		private bool configLoaded = false;
-		private bool conicsLoaded = false;
+		private bool configLoaded;
+		private bool conicsLoaded;
 		private bool shown = true;
-		private bool showTimeNext = false;
-		private bool waitForKey = false;
-		private bool showOptions = false;
-		private bool showKeymapper = false;
-		private bool showEncounter = false;
+		private bool showTimeNext;
+		private bool waitForKey;
+		private bool showOptions;
+		private bool showKeymapper;
+		private bool showEncounter;
 		private Key currentWaitKey = Key.NONE;
 		private double keyWaitTime = 0.0;
 

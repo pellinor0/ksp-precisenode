@@ -36,10 +36,10 @@ namespace RegexKSP {
 		internal NodeState curState;
 		internal ManeuverNode node = null;
 		internal ManeuverNode nextNode = null;
-		internal bool changed = false;
-		internal bool encounter = false;
-		internal bool resizeMainWindow = false;
-		internal bool resizeClockWindow = false;
+		internal bool changed;
+		internal bool encounter;
+		internal bool resizeMainWindow;
+		internal bool resizeClockWindow;
 
 		internal bool progradeParsed = true;
 		internal bool radialParsed = true;
