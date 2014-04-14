@@ -48,7 +48,7 @@ namespace RegexKSP {
 			GUI.backgroundColor = defaultColor;
 		}
 
-		internal static void drawConicsControls(PNOptions options) {
+		internal static void drawConicsControls(PreciseNodeOptions options) {
 			PatchedConicSolver solver = NodeTools.getSolver();
 			Color defaultColor = GUI.backgroundColor;
 			

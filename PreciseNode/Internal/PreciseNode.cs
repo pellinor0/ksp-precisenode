@@ -56,7 +56,7 @@ namespace RegexKSP {
 
 		internal PluginConfiguration config;
 
-		private PNOptions options = new PNOptions();
+		private PreciseNodeOptions options = new PreciseNodeOptions();
 		private NodeManager curState = new NodeManager();
 		private List<Action> scheduledForLayout = new List<Action>();
 

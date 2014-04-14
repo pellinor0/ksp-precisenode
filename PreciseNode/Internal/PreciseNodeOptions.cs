@@ -32,7 +32,7 @@ using UnityEngine;
  ******************************************************************************/
 
 namespace RegexKSP {
-	internal class PNOptions {
+	internal class PreciseNodeOptions {
 		internal Rect mainWindowPos = new Rect(Screen.width / 10, 20, 0, 0);
 		internal Rect optionsWindowPos = new Rect(Screen.width / 3, 20, 0, 0);
 		internal Rect keymapperWindowPos = new Rect(Screen.width / 5, 20, 0, 0);
