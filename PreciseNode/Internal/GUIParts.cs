@@ -65,10 +65,10 @@ namespace RegexKSP {
 			// conics patch limit editor.
 			GUILayout.BeginHorizontal();
 			GUILayout.Label("Change conics samples:", GUILayout.Width(200));
-			GUIParts.drawButton("-", Color.red, () => {
+			GUIParts.drawButton("-", defaultColor, () => {
 				solver.DecreasePatchLimit();
 			});
-			GUIParts.drawButton("+", Color.red, () => {
+			GUIParts.drawButton("+", defaultColor, () => {
 				solver.IncreasePatchLimit();
 			});
 			GUILayout.EndHorizontal();
