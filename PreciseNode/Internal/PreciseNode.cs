@@ -381,7 +381,7 @@ namespace RegexKSP {
 
 				GUILayout.BeginHorizontal();
 				GUIParts.drawButton("Peri", Color.yellow, () => { curState.setPeriapsis(); });
-				GUI.enabled = curState.node.patch.hasDN(targ);
+				GUI.enabled = curState.node.hasDN(targ);
 				GUIParts.drawButton("DN", Color.magenta, () => {
 					if(targ != null) {
 						curState.setUT(curState.node.patch.getTargetDNUT(targ));
@@ -400,7 +400,7 @@ namespace RegexKSP {
 					GUI.enabled = true;
 					GUIParts.drawButton("+1K", Color.green, () => { curState.addUT(1000); });
 				}
-				GUI.enabled = curState.node.patch.hasAN(targ);
+				GUI.enabled = curState.node.hasAN(targ);
 				GUIParts.drawButton("AN", Color.cyan, () => {
 					if(targ != null) {
 						curState.setUT(curState.node.patch.getTargetANUT(targ));

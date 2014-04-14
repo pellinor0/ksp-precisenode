@@ -261,11 +261,16 @@ namespace RegexKSP {
 
 		internal static double getEjectionInclination(this Orbit o, ManeuverNode node) {
 			CelestialBody body = o.referenceBody;
-			Vector3d bodyNormal = body.orbit.GetOrbitNormal().xzy.normalized;
+			Orbit bodyOrbit = body.orbit;
 			Orbit orbitAfterNode = o.applyDeltaV(node.DeltaV, node.UT);
-			Vector3d nodeNormal = orbitAfterNode.GetOrbitNormal().xzy.normalized;
-			double angle = Vector3d.Angle(bodyNormal, nodeNormal);
-			bool south = Vector3d.Dot(Vector3d.Cross(bodyNormal, nodeNormal), bodyNormal.xzy) > 0;
+			return bodyOrbit.getRelativeInclination(orbitAfterNode);
+		}
+
+		internal static double getRelativeInclination(this Orbit o, Orbit other) {
+			Vector3d normal = o.GetOrbitNormal().xzy.normalized;
+			Vector3d otherNormal = other.GetOrbitNormal().xzy.normalized;
+			double angle = Vector3d.Angle(normal, otherNormal);
+			bool south = Vector3d.Dot(Vector3d.Cross(normal, otherNormal), normal.xzy) > 0;
 			return south ? -angle : angle;
 		}
 
@@ -295,24 +300,42 @@ namespace RegexKSP {
 			return o.isClosed();
 		}
 
-		internal static bool hasAN(this Orbit o, Orbit target) {
-			double ut;
-			if (target != null) {
-				ut = o.getTargetANUT(target);
-			} else {
-				ut = o.getEquatorialANUT();
+		internal static bool hasAN(this ManeuverNode node, Orbit target) {
+			if (target == null) {
+				target = FlightGlobals.ActiveVessel.orbit.referenceBody.orbit;
 			}
-			return o.isUTInsidePatch(ut);
+			double relativeInclination = node.patch.getRelativeInclination(target);
+			if (Math.Abs(relativeInclination) >= 0.001d) {
+				Orbit patch = node.patch;
+				double ut;
+				if (target != null) {
+					ut = patch.getTargetANUT(target);
+				} else {
+					ut = patch.getEquatorialANUT();
+				}
+				return patch.isUTInsidePatch(ut);
+			} else {
+				return false;
+			}
 		}
 
-		internal static bool hasDN(this Orbit o, Orbit target) {
-			double ut;
-			if (target != null) {
-				ut = o.getTargetDNUT(target);
-			} else {
-				ut = o.getEquatorialDNUT();
+		internal static bool hasDN(this ManeuverNode node, Orbit target) {
+			if (target == null) {
+				target = FlightGlobals.ActiveVessel.orbit.referenceBody.orbit;
 			}
-			return o.isUTInsidePatch(ut);
+			double relativeInclination = node.patch.getRelativeInclination(target);
+			if (Math.Abs(relativeInclination) >= 0.001d) {
+				Orbit patch = node.patch;
+				double ut;
+				if (target != null) {
+					ut = patch.getTargetDNUT(target);
+				} else {
+					ut = patch.getEquatorialDNUT();
+				}
+				return patch.isUTInsidePatch(ut);
+			} else {
+				return false;
+			}
 		}
 
 		internal static bool isUTInsidePatch(this Orbit o, double ut) {
