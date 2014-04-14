@@ -285,7 +285,7 @@ namespace RegexKSP {
 			Orbit curOrbit = node.patch; // FlightGlobals.ActiveVessel.orbit;
 			for(int k = plan.IndexOf(node.patch); k < plan.Count; k++) {
 				Orbit o = plan[k];
-				if(curOrbit.referenceBody.name != o.referenceBody.name && o.referenceBody.name != "Sun") {
+				if (curOrbit.referenceBody.name != o.referenceBody.name && !o.referenceBody.isSun()) {
 					return o;
 				}
 			}
@@ -301,45 +301,51 @@ namespace RegexKSP {
 		}
 
 		internal static bool hasAN(this ManeuverNode node, Orbit target) {
-			if (target == null) {
-				target = FlightGlobals.ActiveVessel.orbit.referenceBody.orbit;
-			}
-			double relativeInclination = node.patch.getRelativeInclination(target);
-			if (Math.Abs(relativeInclination) >= 0.001d) {
-				Orbit patch = node.patch;
-				double ut;
-				if (target != null) {
-					ut = patch.getTargetANUT(target);
-				} else {
-					ut = patch.getEquatorialANUT();
+			if ((target != null) || !FlightGlobals.ActiveVessel.orbit.referenceBody.isSun()) {
+				if (target == null) {
+					target = FlightGlobals.ActiveVessel.orbit.referenceBody.orbit;
 				}
-				return patch.isUTInsidePatch(ut);
-			} else {
-				return false;
+				double relativeInclination = node.patch.getRelativeInclination(target);
+				if (Math.Abs(relativeInclination) >= 0.001d) {
+					Orbit patch = node.patch;
+					double ut;
+					if (target != null) {
+						ut = patch.getTargetANUT(target);
+					} else {
+						ut = patch.getEquatorialANUT();
+					}
+					return patch.isUTInsidePatch(ut);
+				}
 			}
+			return false;
 		}
 
 		internal static bool hasDN(this ManeuverNode node, Orbit target) {
-			if (target == null) {
-				target = FlightGlobals.ActiveVessel.orbit.referenceBody.orbit;
-			}
-			double relativeInclination = node.patch.getRelativeInclination(target);
-			if (Math.Abs(relativeInclination) >= 0.001d) {
-				Orbit patch = node.patch;
-				double ut;
-				if (target != null) {
-					ut = patch.getTargetDNUT(target);
-				} else {
-					ut = patch.getEquatorialDNUT();
+			if ((target != null) || !FlightGlobals.ActiveVessel.orbit.referenceBody.isSun()) {
+				if (target == null) {
+					target = FlightGlobals.ActiveVessel.orbit.referenceBody.orbit;
 				}
-				return patch.isUTInsidePatch(ut);
-			} else {
-				return false;
+				double relativeInclination = node.patch.getRelativeInclination(target);
+				if (Math.Abs(relativeInclination) >= 0.001d) {
+					Orbit patch = node.patch;
+					double ut;
+					if (target != null) {
+						ut = patch.getTargetDNUT(target);
+					} else {
+						ut = patch.getEquatorialDNUT();
+					}
+					return patch.isUTInsidePatch(ut);
+				}
 			}
+			return false;
 		}
 
 		internal static bool isUTInsidePatch(this Orbit o, double ut) {
 			return (ut >= Planetarium.GetUniversalTime()) && (o.isClosed() || (ut <= o.EndUT));
+		}
+
+		internal static bool isSun(this CelestialBody body) {
+			return body.name == "Sun";
 		}
 	}
 }

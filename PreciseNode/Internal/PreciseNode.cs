@@ -301,14 +301,14 @@ namespace RegexKSP {
 			// Ejection angle
 			if(options.showEAngle) {
 				String eangle = "n/a";
-				if(FlightGlobals.ActiveVessel.orbit.referenceBody.name != "Sun") {
+				if (!FlightGlobals.ActiveVessel.orbit.referenceBody.isSun()) {
 					double angle = FlightGlobals.ActiveVessel.orbit.getEjectionAngle(curState.currentUT());
 					eangle = Math.Abs(angle).ToString("0.##") + "° from " + ((angle >= 0) ? "prograde" : "retrograde");
 				}
 				GUIParts.drawDoubleLabel("Ejection angle:", 100, eangle, 150);
 
 				String einclination = "n/a";
-				if (FlightGlobals.ActiveVessel.orbit.referenceBody.name != "Sun") {
+				if (!FlightGlobals.ActiveVessel.orbit.referenceBody.isSun()) {
 					double angle = FlightGlobals.ActiveVessel.orbit.getEjectionInclination(curState.node);
 					einclination = Math.Abs(angle).ToString("0.##") + "° " + ((angle >= 0) ? "north" : "south");
 				}
