@@ -32,11 +32,8 @@ using System.Text;
 
 namespace RegexKSP {
 	internal class NodeManager {
-		internal NodeState curNodeState;
-		internal NodeState curState;
-		internal ManeuverNode node = null;
-		internal ManeuverNode nextNode = null;
-		internal bool changed;
+		internal ManeuverNode node;
+		internal ManeuverNode nextNode;
 		internal bool encounter;
 		internal bool resizeMainWindow;
 		internal bool resizeClockWindow;
@@ -49,6 +46,10 @@ namespace RegexKSP {
 		internal string radialText = "";
 		internal string normalText = "";
 		internal string timeText = "";
+
+		private NodeState curNodeState;
+		private NodeState curState;
+		private bool changed;
 
 		internal NodeManager() {
 			curState = new NodeState();
