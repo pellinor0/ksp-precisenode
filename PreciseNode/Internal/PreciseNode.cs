@@ -353,12 +353,9 @@ namespace RegexKSP {
 		}
 
 		private void drawTimeControls(Color contentColor) {
-			Color defaultColor = GUI.backgroundColor;
-
 			// Universal time controls
 			GUILayout.BeginHorizontal();
 			GUILayout.Label((options.largeUTIncrement?"UT: (x10 inc)":"UT:"), GUILayout.Width(100));
-			GUI.backgroundColor = Color.green;
 			if(!curState.timeParsed) {
 				GUI.contentColor = Color.red;
 			}
@@ -414,7 +411,6 @@ namespace RegexKSP {
 			}
 
 			GUI.enabled = true;
-			GUI.backgroundColor = defaultColor;
 		}
 
 		private void drawProgradeControls(Color contentColor) {
