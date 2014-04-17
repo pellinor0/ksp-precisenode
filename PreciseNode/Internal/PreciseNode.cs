@@ -485,7 +485,7 @@ namespace RegexKSP {
 				}
 			}
 			GUI.enabled = true;
-			if (GUILayout.Button("Editing Node " + (idx + 1))) {
+			if (GUILayout.Button("Node " + (idx + 1))) {
 				MapView.MapCamera.SetTarget(curState.node.scaledSpaceTarget);
 			}
 			GUIParts.drawButton("Del", Color.red, () => {
@@ -688,7 +688,7 @@ namespace RegexKSP {
 					GUILayout.Label(curNode.DeltaV.magnitude.ToString("F2") + " m/s", GUILayout.Width(90));
 					GUILayout.Label(timeDiff.convertUTtoHumanDuration(), GUILayout.Width(200));
 					if(idx > 0) {
-						GUIParts.drawButton("Merge ▲", Color.white, () => {
+						GUIParts.drawButton("▲ Merge", Color.white, () => {
 							// schedule for next layout pass to not mess up maneuver nodes while iterating over them
 							scheduledForLayout.Add(() => {
 								solver.maneuverNodes[idx].mergeNodeDown();
