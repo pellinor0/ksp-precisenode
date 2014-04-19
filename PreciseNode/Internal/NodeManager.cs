@@ -5,6 +5,7 @@ using System.Text;
 
 /******************************************************************************
  * Copyright (c) 2013-2014, Justin Bengtson
+ * Copyright (c) 2014, Maik Schreiber
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -47,9 +48,16 @@ namespace RegexKSP {
 		internal string normalText = "";
 		internal string timeText = "";
 
+		internal bool HasMemorized {
+			get {
+				return memory != null;
+			}
+		}
+
 		private NodeState curNodeState;
 		private NodeState curState;
 		private bool changed;
+		private NodeState memory;
 
 		internal NodeManager() {
 			curState = new NodeState();
@@ -76,79 +84,100 @@ namespace RegexKSP {
 			return this;
 		}
 
+		private void setPrograde(double d) {
+			if (d != curState.deltaV.z) {
+				curState.deltaV.z = d;
+				progradeText = curState.deltaV.z.ToString();
+				changed = true;
+			}
+		}
+
 		internal void addPrograde(double d) {
-			curState.deltaV.z += d;
-			progradeText = curState.deltaV.z.ToString();
-			changed = true;
+			setPrograde(curState.deltaV.z + d);
 		}
 
 		internal void setPrograde(String s) {
-			double d;
-			progradeText = s;
-			if (s.EndsWith(".")) {
-				progradeParsed = false;
-				return;
-			}
-			progradeParsed = double.TryParse(progradeText, out d);
-			if (progradeParsed) {
-				if (d != curState.deltaV.z) {
-					progradeText = d.ToString();
-					curState.deltaV.z = d;
-					changed = true;
+			if (!s.Equals(progradeText, StringComparison.Ordinal)) {
+				progradeText = s;
+				if (s.EndsWith(".")) {
+					progradeParsed = false;
+					return;
 				}
+				double d;
+				progradeParsed = double.TryParse(progradeText, out d);
+				if (progradeParsed) {
+					setPrograde(d);
+				}
+			}
+		}
+
+		private void setNormal(double d) {
+			if (d != curState.deltaV.y) {
+				curState.deltaV.y = d;
+				normalText = curState.deltaV.y.ToString();
+				changed = true;
 			}
 		}
 
 		internal void addNormal(double d) {
-			curState.deltaV.y += d;
-			normalText = curState.deltaV.y.ToString();
-			changed = true;
+			setNormal(curState.deltaV.y + d);
 		}
 
 		internal void setNormal(String s) {
-			if (normalText.Equals(s, StringComparison.Ordinal)) {
-				return;
-			}
-			double d;
-			normalText = s;
-			if (s.EndsWith(".")) {
-				normalParsed = false;
-				return;
-			}
-			normalParsed = double.TryParse(normalText, out d);
-			if (normalParsed) {
-				if (d != curState.deltaV.y) {
-					normalText = d.ToString();
-					curState.deltaV.y = d;
-					changed = true;
+			if (!s.Equals(normalText, StringComparison.Ordinal)) {
+				normalText = s;
+				if (s.EndsWith(".")) {
+					normalParsed = false;
+					return;
 				}
+				double d;
+				normalParsed = double.TryParse(normalText, out d);
+				if (normalParsed) {
+					setNormal(d);
+				}
+			}
+		}
+
+		private void setRadial(double d) {
+			if (d != curState.deltaV.x) {
+				curState.deltaV.x = d;
+				radialText = curState.deltaV.x.ToString();
+				changed = true;
 			}
 		}
 
 		internal void addRadial(double d) {
-			curState.deltaV.x += d;
-			radialText = curState.deltaV.x.ToString();
-			changed = true;
+			setRadial(curState.deltaV.x + d);
 		}
 
 		internal void setRadial(String s) {
-			if (radialText.Equals(s, StringComparison.Ordinal)) {
-				return;
-			}
-			double d;
-			radialText = s;
-			if (s.EndsWith(".")) {
-				radialParsed = false;
-				return;
-			}
-			radialParsed = double.TryParse(radialText, out d);
-			if (radialParsed) {
-				if (d != curState.deltaV.x) {
-					radialText = d.ToString();
-					curState.deltaV.x = d;
-					changed = true;
+			if (!s.Equals(radialText, StringComparison.Ordinal)) {
+				radialText = s;
+				if (s.EndsWith(".")) {
+					radialParsed = false;
+					return;
+				}
+				double d;
+				radialParsed = double.TryParse(radialText, out d);
+				if (radialParsed) {
+					setRadial(d);
 				}
 			}
+		}
+
+		internal void memorize() {
+			memory = (NodeState) curState.Clone();
+		}
+
+		internal void clearMemory() {
+			memory = null;
+		}
+
+		internal void recallMemory() {
+			setUT(memory.UT);
+			setPrograde(memory.deltaV.z);
+			setNormal(memory.deltaV.y);
+			setRadial(memory.deltaV.x);
 		}
 
 		internal double currentUT() {

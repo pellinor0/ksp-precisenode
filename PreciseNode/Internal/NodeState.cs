@@ -5,6 +5,7 @@ using System.Text;
 
 /******************************************************************************
  * Copyright (c) 2013-2014, Justin Bengtson
+ * Copyright (c) 2014, Maik Schreiber
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +32,7 @@ using System.Text;
  ******************************************************************************/
 
 namespace RegexKSP {
-	internal class NodeState {
+	internal class NodeState : ICloneable {
 		internal Vector3d deltaV;
 		internal double UT;
 
@@ -71,6 +72,10 @@ namespace RegexKSP {
 		internal void createManeuverNode(PatchedConicSolver p) {
 			ManeuverNode newnode = p.AddManeuverNode(UT);
 			newnode.OnGizmoUpdated(deltaV, UT);
+		}
+
+		public object Clone() {
+			return MemberwiseClone();
 		}
 	}
 }

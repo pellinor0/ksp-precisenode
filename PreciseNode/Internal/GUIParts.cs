@@ -39,10 +39,10 @@ namespace RegexKSP {
 			GUILayout.EndHorizontal();
 		}
 
-		internal static void drawButton(String text, Color bgColor, Action callback) {
+		internal static void drawButton(String text, Color bgColor, Action callback, params GUILayoutOption[] options) {
 			Color defaultColor = GUI.backgroundColor;
 			GUI.backgroundColor = bgColor;
-			if(GUILayout.Button(text)) {
+			if(GUILayout.Button(text, options)) {
 				callback();
 			}
 			GUI.backgroundColor = defaultColor;

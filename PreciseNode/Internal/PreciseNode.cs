@@ -256,7 +256,7 @@ namespace RegexKSP {
 			}
 
 			// Human-readable time
-			GUIParts.drawDoubleLabel("Time:", 100, curState.currentUT().convertUTtoHumanTime(), 130);
+			GUIParts.drawDoubleLabel("Time:", 100, curState.currentUT().convertUTtoHumanTime(), 150);
 
 			// Increment buttons
 			GUILayout.BeginHorizontal();
@@ -269,9 +269,24 @@ namespace RegexKSP {
 			GUILayout.EndHorizontal();
 
 			drawTimeControls(contentColor);
-			drawProgradeControls(contentColor);
-			drawNormalControls(contentColor);
-			drawRadialControls(contentColor);
+
+			GUILayout.BeginHorizontal();
+				GUILayout.BeginVertical();
+					drawProgradeControls(contentColor);
+					drawNormalControls(contentColor);
+					drawRadialControls(contentColor);
+				GUILayout.EndVertical();
+				GUILayout.BeginVertical(GUILayout.ExpandHeight(true));
+					GUIParts.drawButton("MS", defaultColor, () => {
+						curState.memorize();
+					}, GUILayout.ExpandHeight(true));
+					GUI.enabled = curState.HasMemorized;
+					GUIParts.drawButton("MR", defaultColor, () => {
+						curState.recallMemory();
+					}, GUILayout.ExpandHeight(true));
+					GUI.enabled = true;
+				GUILayout.EndVertical();
+			GUILayout.EndHorizontal();
 
 			// total delta-V display
 			GUIParts.drawDoubleLabel("Total Δv:", 100, curState.currentMagnitude().ToString("0.##") + " m/s", 130);
@@ -420,7 +435,7 @@ namespace RegexKSP {
 			if(!curState.progradeParsed) {
 				GUI.contentColor = Color.red;
 			}
-			string check = GUILayout.TextField(curState.progradeText, GUILayout.Width(100));
+			string check = GUILayout.TextField(curState.progradeText, GUILayout.Width(70));
 			if(!curState.progradeText.Equals(check, StringComparison.Ordinal)) {
 				curState.setPrograde(check);
 			}
@@ -437,7 +452,7 @@ namespace RegexKSP {
 			if(!curState.normalParsed) {
 				GUI.contentColor = Color.red;
 			}
-			string check = GUILayout.TextField(curState.normalText, GUILayout.Width(100));
+			string check = GUILayout.TextField(curState.normalText, GUILayout.Width(70));
 			if(!curState.normalText.Equals(check, StringComparison.Ordinal)) {
 				curState.setNormal(check);
 			}
@@ -454,7 +469,7 @@ namespace RegexKSP {
 			if(!curState.radialParsed) {
 				GUI.contentColor = Color.red;
 			}
-			string check = GUILayout.TextField(curState.radialText, GUILayout.Width(100));
+			string check = GUILayout.TextField(curState.radialText, GUILayout.Width(70));
 			if(!curState.radialText.Equals(check, StringComparison.Ordinal)) {
 				curState.setRadial(check);
 			}
@@ -479,6 +494,7 @@ namespace RegexKSP {
 				} else {
 					curState.nextNode = solver.maneuverNodes[count - 1];
 				}
+				curState.clearMemory();
 			}
 			GUI.enabled = true;
 			if (GUILayout.Button("Node " + (idx + 1))) {
@@ -486,6 +502,7 @@ namespace RegexKSP {
 			}
 			GUIParts.drawButton("Del", Color.red, () => {
 				solver.RemoveManeuverNode(curState.node);
+				curState.clearMemory();
 			});
 			GUI.enabled = count > 1;
 			if (GUILayout.Button("▶")) {
@@ -494,6 +511,7 @@ namespace RegexKSP {
 				} else {
 					curState.nextNode = solver.maneuverNodes[0];
 				}
+				curState.clearMemory();
 			}
 			GUI.enabled = true;
 			GUILayout.EndHorizontal();
