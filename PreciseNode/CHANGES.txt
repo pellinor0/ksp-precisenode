@@ -16,6 +16,11 @@ Hide Window: P
 Open Node: O
 
 
+0.12
+- Added new buttons "MS" and "MR" to memorize and recall the current maneuver node's settings,
+  respectively.
+- DN/AN buttons should no longer flicker if the relative/equatorial inclination is almost zero.
+
 0.11, 2014-04-09
 - The button "Focus Vessel" should now work as intended.
 - Time and duration displays should now honor the Earth time/Kerbin time setting.
@@ -24,14 +29,14 @@ Open Node: O
 0.10, 2014-04-02
 - Added a new option to show/hide conics controls in the main window.
 - In addition to the ejection angle, the ejection inclination will be displayed.
-- The RP-9f Craft Locator (the part that saves maneuver nodes into the save file)
-  has been removed. KSP itself can save maneuver nodes now.
-  Note: For the time being, your existing craft should be fine. You simply cannot
-  select the part in the editor any longer. Be advised to replace existing craft
-  using this part because it will be removed permanently at some future point.
-  You should be able to remove it from craft files in the editor.
-- The buttons to modify a maneuver node's time will be disabled now if they are
-  not applicable with respect to the node's current time.
+- The RP-9f Craft Locator (the part that saves maneuver nodes into the save file) has been removed.
+  KSP itself can save maneuver nodes now.
+  Note: For the time being, your existing craft should be fine. You simply cannot select the part
+  in the editor any longer. Be advised to replace existing craft using this part because it will
+  be removed permanently at some future point. You should be able to remove it from craft files in
+  the editor.
+- The buttons to modify a maneuver node's time will be disabled now if they are not applicable with
+  respect to the node's current time.
 
 PreciseNode 0.9
 - Added a PartModule to save and load Maneuver Nodes: ModuleNodeSaver.
