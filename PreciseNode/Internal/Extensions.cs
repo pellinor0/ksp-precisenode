@@ -32,7 +32,6 @@ using KSP.IO;
  ******************************************************************************/
 
 namespace RegexKSP {
-
 	internal static class Extensions {
 		/// <summary>
 		/// Creates a new Meneuver Node Gizmo if needed
@@ -168,17 +167,23 @@ namespace RegexKSP {
 		/// <returns>The string format, in meters.</returns>
 		/// <param name="d">The double to format</param>
 		internal static string formatMeters(this double d) {
-			if(Math.Abs(d / 1000000.0) > 1) {
-				// format as kilometers.
-				return (d/1000.0).ToString("0.##") + " km";
-			} else {
-				// use meters
-				if(Math.Abs(d) > 100000.0) {
-					return d.ToString("F0") + " m";
-				} else {
-					return d.ToString("0.##") + " m";
+			string multiplier = "";
+			if ((Math.Abs(d) / 1000) >= 100) {
+				d /= 1000;
+				multiplier = "k";
+
+				if ((Math.Abs(d) / 1000) >= 100) {
+					d /= 1000;
+					multiplier = "M";
+
+					if ((Math.Abs(d) / 1000) >= 100) {
+						d /= 1000;
+						multiplier = "G";
+					}
 				}
 			}
+
+			return string.Format("{0:0.##} {1}m", d, multiplier);
 		}
 
 		/// <summary>
