@@ -2,8 +2,7 @@ PreciseNode for Kerbal Space Program
 
 Released under the BSD 2-clause License.
 
-Source available in this package and you may also obtain it on GitHub
-https://github.com/blizzy78/ksp-precisenode
+Source available on GitHub: https://github.com/blizzy78/ksp-precisenode
 
 Default Keyboard Controls:
 Prograde +/-: Keypad 8/Keypad 5
