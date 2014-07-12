@@ -71,9 +71,6 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>del $(TargetDir)*.pdb $(TargetDir)UnityEngine.dll $(TargetDir)Toolbar.dll $(TargetDir)Assembly-CSharp*.dll $(TargetDir)Mono.*.dll $(TargetDir)TDx*.dll
-del /S /Q $(TargetDir)..\parts
-mkdir $(TargetDir)..\parts\CBA
-xcopy /Y $(ProjectDir)Parts\* $(TargetDir)..\parts\CBA\
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
