@@ -15,7 +15,11 @@ Hide Window: P
 Open Node: O
 
 
-0.12
+0.13, 2014-07-18
+- Updated for KSP 0.24.0.
+- The RP-9f Craft Locator part is now gone.
+
+0.12, 2014-06-10
 - Added new buttons "MS" and "MR" to memorize and recall the current maneuver node's settings,
   respectively.
 - DN/AN buttons should no longer flicker if the relative/equatorial inclination is almost zero.
