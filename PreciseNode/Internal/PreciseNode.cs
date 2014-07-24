@@ -50,7 +50,7 @@ namespace RegexKSP {
 			ADDWIDGET
 		};
 
-		internal static int VERSION = 3;
+		internal static int VERSION = 4;
 
 		private static bool? updateAvailable;
 

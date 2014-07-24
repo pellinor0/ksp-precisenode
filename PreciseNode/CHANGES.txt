@@ -15,6 +15,9 @@ Hide Window: P
 Open Node: O
 
 
+0.14, 2014-07-25
+- Updated for KSP 0.24.1.
+
 0.13, 2014-07-18
 - Updated for KSP 0.24.0.
 - The RP-9f Craft Locator part is now gone.
