@@ -50,7 +50,7 @@ namespace RegexKSP {
 			ADDWIDGET
 		};
 
-		internal static int VERSION = 4;
+		internal static int VERSION = 5;
 
 		internal PluginConfiguration config;
 
