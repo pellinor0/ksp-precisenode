@@ -52,8 +52,6 @@ namespace RegexKSP {
 
 		internal static int VERSION = 4;
 
-		private static bool? updateAvailable;
-
 		internal PluginConfiguration config;
 
 		private PreciseNodeOptions options = new PreciseNodeOptions();
@@ -78,22 +76,12 @@ namespace RegexKSP {
 		private readonly int clockWindowId = WindowId.GetNext();
 		private readonly int conicsWindowId = WindowId.GetNext();
 
-		private UpdateChecker updateChecker;
-
 		/// <summary>
 		/// Overridden function from MonoBehavior
 		/// </summary>
 		internal void Awake() {
 			CancelInvoke();
 			loadConfig();
-
-			if (updateAvailable == null) {
-				updateChecker = new UpdateChecker();
-				updateChecker.OnDone += () => {
-					updateAvailable = updateChecker.UpdateAvailable;
-					updateChecker = null;
-				};
-			}
 		}
 
 		/// <summary>
@@ -124,10 +112,6 @@ namespace RegexKSP {
                     }
                 }
                 processKeyInput();
-			}
-
-			if (updateChecker != null) {
-				updateChecker.update();
 			}
 		}
 
@@ -611,7 +595,7 @@ namespace RegexKSP {
             //TODO: Add threshold controls for removing used nodes
 #endif
 
-			if (updateAvailable == true) {
+			if (UpdateChecker.Done && (UpdateChecker.UpdateAvailable == true)) {
 				GUILayout.Space(5);
 				Color oldColor = GUI.color;
 				GUI.color = Color.yellow;
