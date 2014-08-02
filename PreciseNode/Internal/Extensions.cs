@@ -248,27 +248,35 @@ namespace RegexKSP {
 		/// </summary>
 		/// <returns>The ejection angle in degrees.  Positive results are the angle from prograde, negative results are the angle from retrograde.</returns>
 		/// <param name="nodeUT">Kerbal Space Program Universal Time.</param>
-		internal static double getEjectionAngle(this Orbit o, double nodeUT) {
-			CelestialBody body = o.referenceBody;
+		internal static double getEjectionAngle(this Orbit o, ManeuverNode node) {
+			if (node.nextPatch.patchEndTransition == Orbit.PatchTransitionType.ESCAPE) {
+				CelestialBody body = o.referenceBody;
 
-			// Calculate the angle between the node's position and the reference body's velocity at nodeUT
-			Vector3d prograde = body.orbit.getOrbitalVelocityAtUT(nodeUT);
-			Vector3d position = o.getRelativePositionAtUT(nodeUT);
-			double eangle = ((Math.Atan2(prograde.y, prograde.x) - Math.Atan2(position.y, position.x)) * 180.0 / Math.PI).Angle360();
+				// Calculate the angle between the node's position and the reference body's velocity at nodeUT
+				Vector3d prograde = body.orbit.getOrbitalVelocityAtUT(node.UT);
+				Vector3d position = o.getRelativePositionAtUT(node.UT);
+				double eangle = ((Math.Atan2(prograde.y, prograde.x) - Math.Atan2(position.y, position.x)) * 180.0 / Math.PI).Angle360();
 
-			// Correct to angle from retrograde if needed.
-			if(eangle > 180) {
-				eangle = 180 - eangle;
+				// Correct to angle from retrograde if needed.
+				if (eangle > 180) {
+					eangle = 180 - eangle;
+				}
+
+				return eangle;
+			} else {
+				return double.NaN;
 			}
-
-			return eangle;
 		}
 
 		internal static double getEjectionInclination(this Orbit o, ManeuverNode node) {
-			CelestialBody body = o.referenceBody;
-			Orbit bodyOrbit = body.orbit;
-			Orbit orbitAfterNode = o.applyDeltaV(node.DeltaV, node.UT);
-			return bodyOrbit.getRelativeInclination(orbitAfterNode);
+			if (node.nextPatch.patchEndTransition == Orbit.PatchTransitionType.ESCAPE) {
+				CelestialBody body = o.referenceBody;
+				Orbit bodyOrbit = body.orbit;
+				Orbit orbitAfterEscape = node.nextPatch.nextPatch;
+				return bodyOrbit.getRelativeInclination(orbitAfterEscape);
+			} else {
+				return double.NaN;
+			}
 		}
 
 		internal static double getRelativeInclination(this Orbit o, Orbit other) {
@@ -277,12 +285,6 @@ namespace RegexKSP {
 			double angle = Vector3d.Angle(normal, otherNormal);
 			bool south = Vector3d.Dot(Vector3d.Cross(normal, otherNormal), normal.xzy) > 0;
 			return south ? -angle : angle;
-		}
-
-		internal static Orbit applyDeltaV(this Orbit o, Vector3d deltaV, double ut) {
-			Orbit result = new Orbit();
-			result.UpdateFromStateVectors(o.getRelativePositionAtUT(ut), (o.getOrbitalVelocityAtUT(ut).xzy + deltaV).xzy, o.referenceBody, ut);
-			return result;
 		}
 
 		internal static Orbit findNextEncounter(this ManeuverNode node) {
