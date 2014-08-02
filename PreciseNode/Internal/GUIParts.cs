@@ -56,7 +56,7 @@ namespace RegexKSP {
 			GUILayout.BeginHorizontal();
 			GUILayout.Label("Conics mode: ", GUILayout.Width(100));
 			for (int mode = 0; mode <= 4; mode++) {
-				GUIParts.drawButton(mode.ToString(), (options.conicsMode == mode) ? Color.yellow : defaultColor, () => {
+				drawButton(mode.ToString(), (options.conicsMode == mode) ? Color.yellow : defaultColor, () => {
 					options.setConicsMode(mode);
 				});
 			}
@@ -65,13 +65,28 @@ namespace RegexKSP {
 			// conics patch limit editor.
 			GUILayout.BeginHorizontal();
 			GUILayout.Label("Change conics samples:", GUILayout.Width(200));
-			GUIParts.drawButton("-", defaultColor, () => {
-				solver.DecreasePatchLimit();
-			});
-			GUIParts.drawButton("+", defaultColor, () => {
-				solver.IncreasePatchLimit();
-			});
+			drawPlusMinusButtons(solver.IncreasePatchLimit, solver.DecreasePatchLimit);
 			GUILayout.EndHorizontal();
+		}
+
+		internal static void drawPlusMinusButtons(Action plus, Action minus, bool plusEnabled = true, bool minusEnabled = true) {
+			bool oldEnabled = GUI.enabled;
+			GUI.enabled = plusEnabled || minusEnabled;
+			drawButton("+/-", GUI.backgroundColor, () => {
+				switch (Event.current.button) {
+					case 0:
+						if (plusEnabled) {
+							plus();
+						}
+						break;
+					case 1:
+						if (minusEnabled) {
+							minus();
+						}
+						break;
+				}
+			});
+			GUI.enabled = oldEnabled;
 		}
 	}
 }

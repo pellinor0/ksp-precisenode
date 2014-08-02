@@ -52,6 +52,10 @@ namespace RegexKSP {
 
 		internal static int VERSION = 5;
 
+		private static readonly Color PROGRADE_COLOR = new Color(86, 144, 0);
+		private static readonly Color NORMAL_COLOR = new Color(151, 0, 162);
+		private static readonly Color RADIAL_COLOR = new Color(0, 136, 130);
+
 		internal PluginConfiguration config;
 
 		private PreciseNodeOptions options = new PreciseNodeOptions();
@@ -369,10 +373,8 @@ namespace RegexKSP {
 			GUI.contentColor = contentColor;
 			double currentUT = curState.currentUT();
 			double ut_increment = options.increment * (options.largeUTIncrement ? 10.0 : 1.0);
-			GUI.enabled = curState.node.patch.isUTInsidePatch(currentUT - ut_increment);
-			GUIParts.drawButton("-", Color.red, () => { curState.addUT(-ut_increment); });
-			GUI.enabled = true;
-			GUIParts.drawButton("+", Color.green, () => { curState.addUT(ut_increment); });
+			GUIParts.drawPlusMinusButtons(() => { curState.addUT(ut_increment); }, () => { curState.addUT(-ut_increment); },
+				true, curState.node.patch.isUTInsidePatch(currentUT - ut_increment));
 			GUILayout.EndHorizontal();
 
 			// extended time controls
@@ -417,53 +419,79 @@ namespace RegexKSP {
 		}
 
 		private void drawProgradeControls(Color contentColor) {
+			Color oldContentColor = GUI.contentColor;
+			Color oldBackgroundColor = GUI.backgroundColor;
 			// Prograde controls
 			GUILayout.BeginHorizontal();
+			GUI.contentColor = PROGRADE_COLOR;
 			GUILayout.Label("Prograde:", GUILayout.Width(100));
-			if(!curState.progradeParsed) {
+			if (!curState.progradeParsed) {
 				GUI.contentColor = Color.red;
+				GUI.backgroundColor = Color.red;
 			}
 			string check = GUILayout.TextField(curState.progradeText, GUILayout.Width(70));
+			GUI.contentColor = oldContentColor;
+			GUI.backgroundColor = oldBackgroundColor;
 			if(!curState.progradeText.Equals(check, StringComparison.Ordinal)) {
 				curState.setPrograde(check);
 			}
-			GUI.contentColor = contentColor;
-			GUIParts.drawButton("-", Color.red, () => { curState.addPrograde(-options.increment); });
-			GUIParts.drawButton("+", Color.green, () => { curState.addPrograde(options.increment); });
+			GUIParts.drawPlusMinusButtons(() => {
+				curState.addPrograde(options.increment);
+			}, () => {
+				curState.addPrograde(-options.increment);
+			});
 			GUILayout.EndHorizontal();
 		}
 
 		private void drawNormalControls(Color contentColor) {
+			Color oldContentColor = GUI.contentColor;
+			Color oldBackgroundColor = GUI.backgroundColor;
 			// Normal controls
 			GUILayout.BeginHorizontal();
+			GUI.contentColor = NORMAL_COLOR;
 			GUILayout.Label("Normal:", GUILayout.Width(100));
-			if(!curState.normalParsed) {
+			if (!curState.normalParsed) {
 				GUI.contentColor = Color.red;
+				GUI.backgroundColor = Color.red;
 			}
 			string check = GUILayout.TextField(curState.normalText, GUILayout.Width(70));
-			if(!curState.normalText.Equals(check, StringComparison.Ordinal)) {
+			GUI.contentColor = oldContentColor;
+			GUI.backgroundColor = oldBackgroundColor;
+			if (!curState.normalText.Equals(check, StringComparison.Ordinal)) {
 				curState.setNormal(check);
 			}
 			GUI.contentColor = contentColor;
-			GUIParts.drawButton("-", Color.red, () => { curState.addNormal(-options.increment); });
-			GUIParts.drawButton("+", Color.green, () => { curState.addNormal(options.increment); });
+			GUIParts.drawPlusMinusButtons(() => {
+				curState.addNormal(options.increment);
+			}, () => {
+				curState.addNormal(-options.increment);
+			});
 			GUILayout.EndHorizontal();
 		}
 
 		private void drawRadialControls(Color contentColor) {
+			Color oldContentColor = GUI.contentColor;
+			Color oldBackgroundColor = GUI.backgroundColor;
 			// radial controls
 			GUILayout.BeginHorizontal();
+			GUI.contentColor = RADIAL_COLOR;
 			GUILayout.Label("Radial:", GUILayout.Width(100));
-			if(!curState.radialParsed) {
+			if (!curState.radialParsed) {
 				GUI.contentColor = Color.red;
+				GUI.backgroundColor = Color.red;
 			}
 			string check = GUILayout.TextField(curState.radialText, GUILayout.Width(70));
-			if(!curState.radialText.Equals(check, StringComparison.Ordinal)) {
+			GUI.contentColor = oldContentColor;
+			GUI.backgroundColor = oldBackgroundColor;
+			if (!curState.radialText.Equals(check, StringComparison.Ordinal)) {
 				curState.setRadial(check);
 			}
 			GUI.contentColor = contentColor;
-			GUIParts.drawButton("-", Color.red, () => { curState.addRadial(-options.increment); });
-			GUIParts.drawButton("+", Color.green, () => { curState.addRadial(options.increment); });
+			GUIParts.drawPlusMinusButtons(() => {
+				curState.addRadial(options.increment);
+			}, () => {
+				curState.addRadial(-options.increment);
+			});
 			GUILayout.EndHorizontal();
 		}
 
