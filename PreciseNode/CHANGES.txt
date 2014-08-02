@@ -1,10 +1,15 @@
-PreciseNode for Kerbal Space Program
+Precise Node for Kerbal Space Program
 
 Released under the BSD 2-clause License.
 
 Source available on GitHub: https://github.com/blizzy78/ksp-precisenode
 
+
+Left-click a "+/-" button for plus, right-click it for minus.
+
+
 Default Keyboard Controls:
+
 Prograde +/-: Keypad 8/Keypad 5
 Normal +/-: Keypad 9/Keypad 7
 Radial +/-: Keypad 6/Keypad 4
@@ -15,13 +20,19 @@ Hide Window: P
 Open Node: O
 
 
+1.1.0, 2014-08-02
+- The +/- buttons have been combined into one button. Left-clicking now acts as plus, whereas
+  right-clicking acts as minus.
+- Fixed some bugs in the calculations of ejection angle and ejection inclination.
+- If activated in the options, the conics window is now always displayed regardless of the
+  visibility of the main window.
+
 1.0.0, 2014-07-27
 - In addition to the automatic update check, the plugin now also gets KSP versions
   from the update check server. In case the currently running KSP version is one of
   those versions, the plugin will not complain about being incompatible with this
   KSP version. This saves both players' and the plugin author's time.
 - Updated for KSP 0.24.2.
-
 
 0.14, 2014-07-25
 - Updated for KSP 0.24.1.

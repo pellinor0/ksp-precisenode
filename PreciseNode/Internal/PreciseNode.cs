@@ -50,7 +50,7 @@ namespace RegexKSP {
 			ADDWIDGET
 		};
 
-		internal static int VERSION = 5;
+		internal static int VERSION = 6;
 
 		private static readonly Color PROGRADE_COLOR = new Color(86, 144, 0);
 		private static readonly Color NORMAL_COLOR = new Color(151, 0, 162);
