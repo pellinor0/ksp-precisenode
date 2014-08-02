@@ -165,14 +165,13 @@ namespace RegexKSP {
 				}
 				if(shown) {
 					drawGUI();
-				} else if(canShowConicsWindow) {
-					drawConicsGUI();
 				}
-			} else if(canShowConicsWindow) {
-				drawConicsGUI();
 			}
-			if(canShowClock) {
+			if (canShowClock) {
 				drawClockGUI();
+			}
+			if (canShowConicsWindow) {
+				drawConicsGUI();
 			}
 		}
 
@@ -746,7 +745,7 @@ namespace RegexKSP {
 		/// <value><c>true</c> if the Node Editor can be shown; otherwise, <c>false</c>.</value>
 		private bool canShowNodeEditor {
 			get {
-				return FlightGlobals.fetch != null && FlightGlobals.ActiveVessel != null && MapView.MapIsEnabled && NodeTools.getSolver().maneuverNodes.Count > 0;
+				return (FlightGlobals.ActiveVessel != null) && MapView.MapIsEnabled && (NodeTools.getSolver().maneuverNodes.Count > 0);
 			}
 		}
 
@@ -756,7 +755,7 @@ namespace RegexKSP {
 		/// <value><c>true</c> if the Conics Window can be shown; otherwise, <c>false</c>.</value>
 		private bool canShowConicsWindow {
 			get {
-				return FlightGlobals.fetch != null && FlightGlobals.ActiveVessel != null && MapView.MapIsEnabled && options.showConicsAlways;
+				return (FlightGlobals.ActiveVessel != null) && MapView.MapIsEnabled && options.showConicsAlways;
 			}
 		}
 
@@ -766,7 +765,7 @@ namespace RegexKSP {
 		/// <value><c>true</c> if the Clock Window can be shown; otherwise, <c>false</c>.</value>
 		private bool canShowClock {
 			get {
-				return FlightGlobals.fetch != null && FlightGlobals.ActiveVessel != null && RenderingManager.fetch.enabled && options.showClock;
+				return (FlightGlobals.ActiveVessel != null) && options.showClock;
 			}
 		}
 
