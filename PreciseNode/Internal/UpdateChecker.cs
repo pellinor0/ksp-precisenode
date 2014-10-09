@@ -57,12 +57,13 @@ namespace RegexKSP {
 				if (www.isDone) {
 					try {
 						bool updateAvailable = false;
+						int version = -1;
 						if (String.IsNullOrEmpty(www.error)) {
 							string text = www.text.Replace("\r", string.Empty);
 							Log.debug("version text: {0}", text);
 							string[] lines = text.Split(new char[] { '\n' }, StringSplitOptions.None);
 							try {
-								int version = int.Parse(lines[0]);
+								version = int.Parse(lines[0]);
 								updateAvailable = version > PreciseNode.VERSION;
 							} catch (Exception) {
 								// ignore
@@ -71,9 +72,9 @@ namespace RegexKSP {
 						}
 
 						if (updateAvailable) {
-							Log.info("update found: {0} vs {1}", www.text, PreciseNode.VERSION);
+							Log.info("update found: {0} vs {1}", version, PreciseNode.VERSION);
 						} else {
-							Log.info("no update found: {0} vs {1}", www.text, PreciseNode.VERSION);
+							Log.info("no update found: {0} vs {1}", version, PreciseNode.VERSION);
 						}
 						UpdateAvailable = updateAvailable;
 					} finally {

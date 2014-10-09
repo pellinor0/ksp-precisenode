@@ -20,6 +20,9 @@ Hide Window: P
 Open Node: O
 
 
+1.1.1, 2014-10-09
+- Fixed a bug in the KSP compatibility check.
+
 1.1.0, 2014-08-02
 - The +/- buttons have been combined into one button. Left-clicking now acts as plus, whereas
   right-clicking acts as minus.
