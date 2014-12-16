@@ -20,6 +20,9 @@ Hide Window: P
 Open Node: O
 
 
+1.1.2, 2014-12-16
+- Updated for KSP 0.90.0.
+
 1.1.1, 2014-10-09
 - Fixed a bug in the KSP compatibility check.
 
