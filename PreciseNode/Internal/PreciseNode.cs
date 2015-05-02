@@ -745,7 +745,7 @@ namespace RegexKSP {
 		/// <value><c>true</c> if the Node Editor can be shown; otherwise, <c>false</c>.</value>
 		private bool canShowNodeEditor {
 			get {
-				return (FlightGlobals.ActiveVessel != null) && MapView.MapIsEnabled && (NodeTools.getSolver().maneuverNodes.Count > 0);
+				return (FlightGlobals.ActiveVessel != null) && MapView.MapIsEnabled && (NodeTools.getSolver() != null) && (NodeTools.getSolver().maneuverNodes.Count > 0);
 			}
 		}
 
