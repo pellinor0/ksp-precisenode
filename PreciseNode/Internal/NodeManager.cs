@@ -126,7 +126,6 @@ namespace RegexKSP {
 		private void setPrograde(double d) {
 			if (d != curState.deltaV.z) {
 				curState.deltaV.z = d;
-				progradeText = curState.deltaV.z.ToString();
 				changed = true;
 			}
 		}
@@ -166,7 +165,6 @@ namespace RegexKSP {
 		private void setNormal(double d) {
 			if (d != curState.deltaV.y) {
 				curState.deltaV.y = d;
-				normalText = curState.deltaV.y.ToString();
 				changed = true;
 			}
 		}
@@ -207,7 +205,6 @@ namespace RegexKSP {
 		private void setRadial(double d) {
 			if (d != curState.deltaV.x) {
 				curState.deltaV.x = d;
-				radialText = curState.deltaV.x.ToString();
 				changed = true;
 			}
 		}
@@ -335,9 +332,9 @@ namespace RegexKSP {
 
 		private void updateCurrentNodeState() {
 			curNodeState.update(node);
-			progradeText = node.DeltaV.z.ToString();
-			normalText = node.DeltaV.y.ToString();
-			radialText = node.DeltaV.x.ToString();
+			progradeText = node.DeltaV.z.ToString("0.00");
+			normalText = node.DeltaV.y.ToString("0.00");
+			radialText = node.DeltaV.x.ToString("0.00");
 			timeText = node.UT.ToString();
 		}
 	}
