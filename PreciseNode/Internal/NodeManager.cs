@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 /******************************************************************************
  * Copyright (c) 2013-2014, Justin Bengtson
@@ -30,8 +31,46 @@ using System.Text;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
-
 namespace RegexKSP {
+
+	public static class OrbitExtensions
+	{
+		public static Vector3d DeltaVToManeuverNodeCoordinates(this Orbit o, double UT, Vector3d dV)
+		{
+			return new Vector3d(Vector3d.Dot(o.RadialPlus(UT), dV),
+			                    Vector3d.Dot(o.NormalPlus(UT), dV),
+			                    Vector3d.Dot(o.Prograde(UT), dV));
+		}
+		public static Vector3d Prograde(this Orbit o, double UT)
+		{
+			return o.SwappedOrbitalVelocityAtUT(UT)   .normalized;
+		}
+		public static Vector3d RadialPlus(this Orbit o, double UT)
+		{
+			return Vector3d.Exclude(o.Prograde(UT), o.Up(UT)).normalized;
+		}
+		public static Vector3d Up(this Orbit o, double UT)
+		{
+			return o.SwappedRelativePositionAtUT(UT).normalized;
+		}
+		public static Vector3d NormalPlus(this Orbit o, double UT)
+		{
+			return SwapYZ(o.GetOrbitNormal()).normalized;
+		}
+		public static Vector3d SwappedOrbitalVelocityAtUT(this Orbit o, double UT)
+		{
+			return SwapYZ(o.getOrbitalVelocityAtUT(UT));
+		}
+		public static Vector3d SwappedRelativePositionAtUT(this Orbit o, double UT)
+		{
+			return SwapYZ(o.getRelativePositionAtUT(UT));
+		}
+		public static Vector3d SwapYZ(Vector3d v)
+		{
+			return new Vector3d(v.x, v.z, v.y);
+		}
+	}
+
 	internal class NodeManager {
 		internal ManeuverNode node;
 		internal ManeuverNode nextNode;
@@ -92,8 +131,21 @@ namespace RegexKSP {
 			}
 		}
 
+		internal void addDv(Vector3d dV)
+		{
+			if (dV != Vector3d.zero) {
+				curState.deltaV += dV;
+				changed = true;
+			}
+		}
+
 		internal void addPrograde(double d) {
-			setPrograde(curState.deltaV.z + d);
+			var ut = node.UT;
+			// A prograde burn preserves the direction,
+			// so there is no error to correct here.
+			var dV = node.nextPatch.Prograde(ut) * d;
+			dV = node.patch.DeltaVToManeuverNodeCoordinates (ut, dV);
+			addDv (dV);
 		}
 
 		internal void setPrograde(String s) {
@@ -120,7 +172,21 @@ namespace RegexKSP {
 		}
 
 		internal void addNormal(double d) {
-			setNormal(curState.deltaV.y + d);
+			var ut = node.UT;
+			var vel = node.nextPatch.SwappedOrbitalVelocityAtUT (ut);
+			// A normal burn turns the velocity vector around the
+			//   axis through the vessel and the parent body.
+			// Therefore it is only affected by the angular component of the velocity.
+			var pos = node.nextPatch.SwappedRelativePositionAtUT (ut);
+			var radVel = pos.normalized * Vector3d.Dot (pos.normalized, vel);
+			var angVel = vel - radVel;
+			// A full circle corresponds to a deltaV of 2*pi*angVel
+			var angle = (d / angVel.magnitude) * (180d / Math.PI);
+			var axis = -pos.normalized;
+			var newVel = (Quaternion.AngleAxis((float)angle, axis) * vel);
+
+			var dV = node.patch.DeltaVToManeuverNodeCoordinates (ut, newVel - vel);
+			addDv (dV);
 		}
 
 		internal void setNormal(String s) {
@@ -147,7 +213,16 @@ namespace RegexKSP {
 		}
 
 		internal void addRadial(double d) {
-			setRadial(curState.deltaV.x + d);
+			var ut = node.UT;
+			var vel = node.nextPatch.SwappedOrbitalVelocityAtUT (ut);
+			// A radial burn turns the velocity vector around the orbit normal.
+			// A full circle corresponds to a deltaV of 2*pi*vel
+			var angle = (d / vel.magnitude) * (180d / Math.PI);
+			var axis = node.nextPatch.NormalPlus(ut);
+			var newVel = (Quaternion.AngleAxis((float)angle, axis) * vel);
+
+			var dV = node.patch.DeltaVToManeuverNodeCoordinates (ut, newVel - vel);
+			addDv (dV);
 		}
 
 		internal void setRadial(String s) {
